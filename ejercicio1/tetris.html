@@ -1,0 +1,28 @@
+<!doctype html>
+<html>
+<head>
+   <title>Tetris</title>
+   <link rel="stylesheet" href="tetris.css">
+   <script src="tetris.js"></script>
+</head>
+<body>
+    <canvas id="canvas" width="150" height="150"></canvas>
+
+<script>
+// ===== main ====
+// variables globales para acceder al canvas
+var canvas = document.getElementById("canvas");
+var ctx = canvas.getContext("2d");
+
+// cuando hayas implementado los métodos anteriores, las 
+// siguientes líneas crearán y mostrarán tres bloques en pantalla	
+var block1 = new Block(new Point(0,0), 'red'),
+    block2 = new Block(new Point(1,1), 'blue'),
+    block3 = new Block(new Point(2,2), 'green');
+
+block1.draw();
+block2.draw();
+block3.draw();
+</script>
+</body>
+</html>
