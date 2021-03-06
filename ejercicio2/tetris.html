@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+<head>
+   <title>Tetris</title>
+   <link rel="stylesheet" href="tetris.css">
+   <script src="tetris.js"></script>
+</head>
+<body>
+    <canvas id="canvas" width="1000" height="150"></canvas>
+
+<script>
+
+
+// ===== main ====
+
+// canvas related variables
+var canvas = document.getElementById("canvas");
+var ctx = canvas.getContext("2d");
+
+// clear the canvas
+ctx.fillStyle = 'white';
+ctx.fillRect(0,0,canvas.width,canvas.height); 
+
+var tetrominos = [I_Shape, J_Shape, L_Shape, O_Shape, S_Shape, T_Shape, Z_Shape];
+x = 3;
+var shapes = [];
+tetrominos.forEach( function ( tetromino ) {
+                        shape = new tetromino(new Point(x, 1));
+                        shapes.push(shape);
+                        shape.draw();
+                        x += 4;
+                     });
+
+</script>
+</body>
+</html>
