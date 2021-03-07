@@ -78,6 +78,10 @@ Block.OUTLINE_WIDTH = 2;
 Block.prototype = new Rectangle();   //decimos q herede de rectangle
 Block.prototype.constructor = Block;  //indicamos q su contructor es block, que sino coge por defecto rectangle
 
+Block.prototype.can_move = function(board, dx, dy) {
+	return true;
+}
+
 
 // ************************************
 // *      EJERCICIO 2                  *
@@ -284,6 +288,16 @@ Tetris.prototype.create_new_shape = function(){
 	// Elegir un nombre de pieza al azar del array Tetris.SHAPES
 	// Crear una instancia de ese tipo de pieza (x = centro del tablero, y = 0)
 	// Devolver la referencia de esa pieza nueva
+
+	var randomNumber=Math.floor(Math.random()*Tetris.SHAPES.length);  //Cogemos un numero random del 0 al 6. La longitud del array es 7. pero el ultimo no lo coge
+	var shape= Tetris.SHAPES[randomNumber]  //Devolvemos el shapes referente a la posicion del numero aleatorio
+
+    var center=Math.trunc(Tetris.BOARD_WIDTH/2);  //el centro del x será la largura del tablero / 2. como puede dar un numero con comas, con esta funcion devolvera el entero.
+	var newpoint= new Point(center,0); //Creamos la pieza con la x=centro, y=0
+
+	var piezaNueva= new shape(newpoint);  //shape cogera valor x ejemplo de I_Shape. Asique crearemos un I_shape como atributo pasandole el punto central
+	return piezaNueva  //Devolvemos la referencia a la nueva pieza
+
 }
 
 Tetris.prototype.init = function(){
@@ -295,6 +309,7 @@ Tetris.prototype.init = function(){
 	// TU CÓDIGO AQUÍ: 
 	// Pintar la pieza actual en el tablero
 	// Aclaración: (Board tiene un método para pintar)
+	this.board.draw_shape(this.current_shape);  //Llamamos al metodo de pintar de board y le pasamoa la pieza actual para q la pinte
 
 }
 
