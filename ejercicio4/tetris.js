@@ -6,7 +6,7 @@
 
 function Point (x, y) {
 	this.x = x;
-	this.y = y;    
+	this.y = y;
 }
 
 // ============== Rectangle ====================
@@ -25,8 +25,8 @@ Rectangle.prototype.draw = function() {
 
 	// TU CÓDIGO AQUÍ:
 	// pinta un rectángulo del color actual en pantalla en la posición px,py, con
-	// la anchura y altura actual y una línea de anchura=lineWidth. Ten en cuenta que 
-	// en este ejemplo la variable ctx es global y que guarda el contexto (context) 
+	// la anchura y altura actual y una línea de anchura=lineWidth. Ten en cuenta que
+	// en este ejemplo la variable ctx es global y que guarda el contexto (context)
 	// para pintar en el canvas.
 
 	ctx.beginPath(); //preparamos para empezar a pintar el camino
@@ -34,6 +34,7 @@ Rectangle.prototype.draw = function() {
 	ctx.closePath(); //Cerramos
 	ctx.fillStyle=this.color;  //ponerle color al fondo
 	ctx.lineWidth=this.lineWidth; //Asignamos la anchura del borde
+	ctx.strokeStyle='black';   //ejer 4 - Ahora es necesario agregar está linea, ya q sino pierde el marco y se queda de color blanco
 	ctx.fill();  //Rellenar el cuadrado
 	ctx.stroke(); //bordear el cuadrado. por defecto es color negro y no dice nada d color
 
@@ -82,7 +83,8 @@ function Block (pos, color) {
 	var y=pos.y; //cogemos la posicion y
 
 	//El punto1 tendra q ser la posicion dnd empezara el cuadrado(el punto de arriba a la izq) y el punto2 donde terminará(el punto de abajo a la derecha.
-	var puntoUno= new Point(x*Block.BLOCK_SIZE, y*Block.BLOCK_SIZE);   //tenemos q multiplicarlo por el tamaño del bloque. por ejemplo. nos llega q quiere el punto 0 - pues 0*30(q será la longitud del cuadrado)=0. empezará el punto en la pos 0. despues el 1. 1*30=30. empezará el cuadrado en la posicion 30, librando justo el bloque 0. si no lo multiplicariamos se solaparian los cubos. y asi sucesivamente.
+	//var puntoUno= new Point(x*Block.BLOCK_SIZE, y*Block.BLOCK_SIZE);   //tenemos q multiplicarlo por el tamaño del bloque. por ejemplo. nos llega q quiere el punto 0 - pues 0*30(q será la longitud del cuadrado)=0. empezará el punto en la pos 0. despues el 1. 1*30=30. empezará el cuadrado en la posicion 30, librando justo el bloque 0. si no lo multiplicariamos se solaparian los cubos. y asi sucesivamente.
+	var puntoUno= new Point(x*Block.BLOCK_SIZE + Block.OUTLINE_WIDTH,y*Block.BLOCK_SIZE + Block.OUTLINE_WIDTH);  //(sumando eso me pasa el test, sino no :() Se suma el grosor de la linea. Todas las piezas se desplazaran 2 a la derecha y 2 hacia abajo
 	var puntoDos= new Point(puntoUno.x+Block.BLOCK_SIZE,puntoUno.y+Block.BLOCK_SIZE); //Ya tenemos el punto 1 que será el principio del cuadrado, punto superior izq. Ahora crearemos el punto 2 que será el final, punto inferior derecho. X esta razon cogeremos el valos¡r x y del anterior punto, sumandole la lonjitud q tendrá el bloque. como antes si entra el punto 0. el puntoUno crearia la posicion (0,0) y aqui quedaria (30,30) sumando la lonjitud. si entra el 1, el puntoUno crearia (30,30) y el puntoDos(60,60). si entra el 2 - se crearia (60,60) y (90,90). asi sucesivamente
 
 	this.init(puntoUno, puntoDos); //Llamamos al metodo init pasandole los dos puntos. para q cree el cuadrado
@@ -132,11 +134,12 @@ Shape.prototype.init = function(coords, color) {
 	// que forman la Pieza y color, un string que indica el color de los bloques
 	// Post-condición: para cada coordenada, crea un bloque de ese color y lo guarda en un bloque-array.
 
-	this.blockArray=[]; //Creamos una lista que tendrá todos los bloques
+	//Se tiene que llamar blocks. porq los otros metodos ya implementados sino no lo cogen bien
+	this.blocks=[]; //Creamos una lista que tendrá todos los bloques
 
 	// Recorremos con forEarch todas las coordenadas q tiene el array coords, Con cada cordenada del array,
 	// añadimos en la array de blockes un nuevo blocke con la cordenada y el color(q será para todos igual);
-	coords.forEach(cordenada => this.blockArray.push(new Block(cordenada,color)));
+	coords.forEach(cordenada => this.blocks.push(new Block(cordenada,color)));
 
 };
 
@@ -144,7 +147,7 @@ Shape.prototype.draw = function() {
 
 	// TU CÓDIGO AQUÍ: método que debe pintar en pantalla todos los bloques
 	// que forman la Pieza
-	this.blockArray.forEach(block => block.draw());   //Recorremos todos los blockes y con el metodo .draw() los pintaremos.
+	this.blocks.forEach(block => block.draw());   //Recorremos todos los blockes y con el metodo .draw() los pintaremos.
 
 };
 
@@ -158,7 +161,7 @@ Shape.prototype.can_move = function(board, dx, dy) {
 /** Método creado en el EJERCICIO 4 */
 
 Shape.prototype.move = function(dx, dy) {
-   
+
 	for (block of this.blocks) {
 		block.erase();
 	}
@@ -192,7 +195,7 @@ function J_Shape(center) {
 	var coords = [new Point(center.x - 1, center.y),
 		new Point(center.x , center.y),//centro
 		new Point(center.x+1 , center.y),
-		new Point(center.x+1 , center.y+1)];  //curiosamente es +
+		new Point(center.x+1 , center.y+1)];
 
 	Shape.prototype.init.call(this, coords, "orange");
 }
@@ -316,7 +319,6 @@ Board.prototype.draw_shape = function(shape){
 Board.prototype.can_move = function(x,y){
 	return true;
 }
-
 // ==================== Tetris ==========================
 
 function Tetris() {
@@ -331,27 +333,29 @@ Tetris.BOARD_COLOR='white';
 
 Tetris.prototype.create_new_shape = function(){
 
-	// TU CÓDIGO AQUÍ: 
+	// TU CÓDIGO AQUÍ:
 	// Elegir un nombre de pieza al azar del array Tetris.SHAPES
 	// Crear una instancia de ese tipo de pieza (x = centro del tablero, y = 0)
 	// Devolver la referencia de esa pieza nueva
 
-	var randomNumber=Math.floor(Math.random()*Tetris.SHAPES.length);  //Cogemos un numero random del 0 al 6. La longitud del array es 7. pero el ultimo no lo coge
+
+	var randomNumber=Math.floor(Math.random()*Tetris.SHAPES.length);  //Cogemos un numero random del 0 al 6. La longitud del array es 7. pero el ultimo no lo coge https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Math/random
 	var shape= Tetris.SHAPES[randomNumber]  //Devolvemos el shapes referente a la posicion del numero aleatorio
 
 	var center=Math.trunc(Tetris.BOARD_WIDTH/2);  //el centro del x será la largura del tablero / 2. como puede dar un numero con comas, con esta funcion devolvera el entero.
 	var newpoint= new Point(center,0); //Creamos la pieza con la x=centro, y=0
 
 	var piezaNueva= new shape(newpoint);  //shape cogera valor x ejemplo de I_Shape. Asique crearemos un I_shape como atributo pasandole el punto central
+
 	return piezaNueva  //Devolvemos la referencia a la nueva pieza
 
 }
 
 Tetris.prototype.init = function(){
 
-    /**************
-     EJERCICIO 4
-    ***************/
+	/**************
+	 EJERCICIO 4
+	 ***************/
 
 	// gestor de teclado
 
@@ -361,21 +365,31 @@ Tetris.prototype.init = function(){
 
 	this.current_shape = this.create_new_shape()
 
-	// TU CÓDIGO AQUÍ: 
+	// TU CÓDIGO AQUÍ:
 	// Pintar la pieza actual en el tablero
 	// Aclaración: (Board tiene un método para pintar)
 	this.board.draw_shape(this.current_shape);  //Llamamos al metodo de pintar de board y le pasamoa la pieza actual para q la pinte
 
+
 }
 
-Tetris.prototype.key_pressed = function(e) { 
+Tetris.prototype.key_pressed = function(e) {
 
- 	var key = e.keyCode ? e.keyCode : e.which;
+	var key = e.keyCode ? e.keyCode : e.which;
 
-        // TU CÓDIGO AQUÍ:
+	// TU CÓDIGO AQUÍ:
 	// en la variable key se guardará el código ASCII de la tecla que
-	// ha pulsado el usuario. ¿Cuál es el código key que corresponde 
+	// ha pulsado el usuario. ¿Cuál es el código key que corresponde
 	// a mover la pieza hacia la izquierda, la derecha, abajo o a rotarla?
+	console.log("Tecla pulsada: "+e.key+"  key: "+key);
+
+	if (key==39){  //Derecha
+		this.do_move("Right");
+	}else if (key==37){  //Izquierda
+		this.do_move("Left");
+	}else if (key==40){  //Abajo
+		this.do_move("Down");
+	}
 
 
 }
@@ -384,9 +398,19 @@ Tetris.prototype.do_move = function(direction) {
 
 	// TU CÓDIGO AQUÍ: el usuario ha pulsado la tecla Left, Right o Down (izquierda,
 	// derecha o abajo). Tenemos que mover la pieza en la dirección correspondiente
-	// a esa tecla. Recuerda que el array Tetris.DIRECTION guarda los desplazamientos 
-	// en cada dirección, por tanto, si accedes a Tetris.DIRECTION[direction], 
-	// obtendrás el desplazamiento (dx, dy). A continuación analiza si la pieza actual 
-	// se puede mover con ese desplazamiento. En caso afirmativo, mueve la pieza. 
-       
+	// a esa tecla. Recuerda que el array Tetris.DIRECTION guarda los desplazamientos
+	// en cada dirección, por tanto, si accedes a Tetris.DIRECTION[direction],
+	// obtendrás el desplazamiento (dx, dy). A continuación analiza si la pieza actual
+	// se puede mover con ese desplazamiento. En caso afirmativo, mueve la pieza.
+
+
+	desplazamiento=Tetris.DIRECTION[direction];  //cogemos los desplazamientos correspondientes a la direccion
+
+	dx=desplazamiento[0];  //cogemos el elemento 0 - dx
+	dy=desplazamiento[1];  //cogemos el elemento 1 - dy
+	console.log("dx: "+dx+" dy: "+dy);
+
+	this.current_shape.move(dx,dy); //Llamamos al metodo para que nos mueva la piza actual pasandole las direcciones de movimiento
+
+
 }
