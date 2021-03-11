@@ -345,7 +345,8 @@ Tetris.prototype.create_new_shape = function(){
 	var center=Math.trunc(Tetris.BOARD_WIDTH/2);  //el centro del x será la largura del tablero / 2. como puede dar un numero con comas, con esta funcion devolvera el entero.
 	var newpoint= new Point(center,0); //Creamos la pieza con la x=centro, y=0
 
-	var piezaNueva= new shape(newpoint);  //shape cogera valor x ejemplo de I_Shape. Asique crearemos un I_shape como atributo pasandole el punto central
+	//var piezaNueva= new shape(newpoint);  //shape cogera valor x ejemplo de I_Shape. Asique crearemos un I_shape como atributo pasandole el punto central
+	var piezaNueva= new S_Shape(newpoint);  //Para este ejercicio creamos una S_SHAPE SIEMPRE
 
 	return piezaNueva  //Devolvemos la referencia a la nueva pieza
 
