@@ -352,10 +352,13 @@ Board.prototype.can_move = function(x,y){
 
 	/* EJERCICIO 7 */
 	// TU CÓDIGO AQUÍ: código para detectar colisiones. Si la posición x,y está en el diccionario grid, devolver false y true en cualquier otro caso.
-
 	var canmove=false;
-	if ((x<this.width && x>=0)&&(y>=0 && y<this.height) ){  //Comprobamos q el punto x e y que nos pasan está dentro de los limites del tablero. es decir entre 0 y la anchura max o altura max
-		canmove= true;
+	if ((x<this.width && x>=0)&&(y>=0 && y<this.height) ){//Comprobamos q el punto x e y que nos pasan está dentro de los limites del tablero. es decir entre 0 y la anchura max o altura max
+		var item=""+x+","+y+""; //Creamos el item igual q cuando los añadimos al grid
+		if (!(item in this.grid)){ //si el elemento no esta en grid, la piezsa podrá moverse a esa posicion asiq ponemos canmove=true
+			canmove= true;
+		}
+
 	}
 	return canmove;
 };
