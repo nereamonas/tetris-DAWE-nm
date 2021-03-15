@@ -338,7 +338,7 @@ Board.prototype.add_shape = function(shape){
 		var block=shape.blocks[i];
 		var x= block.x;
 		var y= block.y;
-		var tuplaxy="("+x+","+y+")";
+		var tuplaxy=""+x+","+y+"";
 		this.grid[tuplaxy]=block;
 		console.log(shape.blocks[i]);
 		console.log(this.grid);
