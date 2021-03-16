@@ -389,6 +389,8 @@ Tetris.prototype.create_new_shape = function(){
 	var newpoint= new Point(center,0); //Creamos la pieza con la x=centro, y=0
 
 	var piezaNueva= new shape(newpoint);  //shape cogera valor x ejemplo de I_Shape. Asique crearemos un I_shape como atributo pasandole el punto central
+	//var piezaNueva= new S_Shape(newpoint);  //Para pasar el test del ejercicio 4, 5 y 6(parte 1) - Para este ejercicio creamos una S_SHAPE SIEMPRE.  tendremos q descomentar esta linea
+
 	return piezaNueva  //Devolvemos la referencia a la nueva pieza
 
 }
