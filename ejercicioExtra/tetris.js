@@ -2,6 +2,14 @@
 // *     EJERCICIO 1                   *
 // ************************************
 
+//Sonido
+function loadAudio(url){
+	return new Promise(resolve => {
+		const audio= new Audio(url);
+		audio.load();
+		resolve(audio);
+	});
+}
 
 // ============== Point =======================
 
@@ -42,7 +50,7 @@ Rectangle.prototype.draw = function() {
 }
 Rectangle.prototype.draw_next = function() {
 	ctxNextPieza.beginPath(); //preparamos para empezar a pintar el camino
-	ctxNextPieza.rect(this.px,this.py,this.width,this.height); //crear un cuadrado. x: desde la raiz x cuanto s separa de la pos 0. y: desde la raiz y cuanto se separa de la pos 0. width: la anchura q cogerá el cuadrado. heigth: la altura q cogerá el cuadrado
+	ctxNextPieza.rect(this.px-90,this.py,this.width,this.height); //crear un cuadrado. x: desde la raiz x cuanto s separa de la pos 0. y: desde la raiz y cuanto se separa de la pos 0. width: la anchura q cogerá el cuadrado. heigth: la altura q cogerá el cuadrado
 	ctxNextPieza.closePath(); //Cerramos
 	ctxNextPieza.fillStyle=this.color;  //ponerle color al fondo
 	ctxNextPieza.lineWidth=this.lineWidth; //Asignamos la anchura del borde
@@ -565,6 +573,7 @@ Board.prototype.remove_complete_rows = function(){
 };
 
 Board.prototype.game_over = function() {
+	loadAudio("audio/sonido_gameover.mp3").then( audio => audio.play());
 	clearInterval(interval);  //Tenemos que parar el interval porq sino siue intenetando sacar piezas.
 	// Mostrar mensaje de game over en el canvas
 
@@ -616,6 +625,7 @@ Tetris.prototype.create_new_shape = function(){
 	return piezaNueva  //Devolvemos la referencia a la nueva pieza
 
 }
+
 var tetris;
 var centroS = Math.trunc(Tetris.BOARD_WIDTH/2);
 var centroNextShape = 4;
@@ -624,6 +634,8 @@ Tetris.prototype.init = function(){
 	/**************
 	 EJERCICIO 4
 	 ***************/
+	//Activar audio
+	loadAudio("audio/sonido_tetris.mp3").then( audio => audio.play());
 
 	// gestor de teclado
 
@@ -672,13 +684,13 @@ Tetris.prototype.key_pressed = function(e) {
 		}else if (key==32){  //Barra espaciadora
 			this.do_move("Space");
 		}else if (key==38){  //Arriba
+			loadAudio("audio/sonido_rotar.mp3").then( audio => audio.play());
 			this.do_rotate();
 		}else if (key==80){  //P  - pausar juego
 			console.log("Juego pausado");
 			this.board.juego_pausado();
 			tetris_paused=true;
 			clearInterval(interval);  //Tenemos que parar el interval porq sino sigue intenetando sacar piezas.
-
 		}
 	}else{
 		if (key==80){  //P  - pausar juego
@@ -727,6 +739,7 @@ Tetris.prototype.do_move = function(direction) {
 		}
 	}
 	if (piezaFinal){
+		loadAudio("audio/sonido_espacio.mp3").then( audio => audio.play());
 		this.board.add_shape(this.current_shape); //Añadimos la pieza actual al tablero;
 		var pieza = this.next_shape.constructor;
 		this.next_shape = this.create_new_shape(centroNextShape);

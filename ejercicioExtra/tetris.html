@@ -4,16 +4,34 @@
     <title>Tetris</title>
     <link rel="stylesheet" href="tetris.css">
     <script src="tetris.js"></script>
+
 </head>
 <body>
+<div class="row">
+    <div class="column" >
 
-<p id="puntuacion">Puntuación: 0</p>
-<p id="nivel">Nivel: 1</p>
-<canvas id="canvasNextPieza" width="200" height="200"></canvas>
-<canvas id="canvas" width="300" height="600"></canvas>
+    </div>
+    <div class="column" >
+        <canvas id="canvas" width="300" height="600" style="float:left"></canvas>
+        <div id="images" style="position:absolute">
+            <img id="pause" src="imagen/pause.png" alt="Pause" width="300" style="visibility:hidden" />
+        </div>
+    </div>
+    <div class="column" >
 
+        <p id="puntuacion">Puntuación: 0</p>
+        <p id="nivel">Nivel: 1</p>
+        <p> Siguiente pieza:</p>
+        <canvas  id="canvasNextPieza" width="180" height="150"></canvas>
+    </div>
+    <div class="column" >
+        <p >Ranking: </p>
+    </div>
+
+</div>
 
 <script>
+
     // ===== main ====
     // canvas related variables
     var canvas = document.getElementById("canvas");

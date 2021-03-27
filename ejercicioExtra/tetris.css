@@ -2,3 +2,22 @@
     border:1px solid #000000;
 }
 
+* {
+    box-sizing: border-box;
+}
+
+.column {
+    width: 25%;
+    float: left;
+    padding: 10px;
+}
+
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+
+
+
