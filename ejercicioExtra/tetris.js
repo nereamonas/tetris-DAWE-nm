@@ -11,6 +11,18 @@ function loadAudio(url){
 	});
 }
 
+function cambiarModoSonido(){
+	audioFondo=document.getElementById('audioFondo');
+	if(audioFondo.paused){
+		audioFondo.play();
+		document.getElementById('sonido').src="imagen/sonidoActivado.png";
+	}else{
+		audioFondo.pause();
+		document.getElementById('sonido').src="imagen/sonidoDesactivado.png";
+	}
+
+}
+
 // ============== Point =======================
 
 function Point (x, y) {
@@ -631,8 +643,6 @@ Tetris.prototype.init = function(){
 	/**************
 	 EJERCICIO 4
 	 ***************/
-	//Activar audio
-	loadAudio("audio/sonido_tetris.mp3").then( audio => audio.play());
 
 	// gestor de teclado
 

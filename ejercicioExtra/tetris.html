@@ -16,6 +16,9 @@
         <div id="images" style="position:absolute">
             <img id="pause" src="imagen/pause.png" alt="Pause" width="300" style="visibility:hidden" />
         </div>
+        <div style="position:absolute">
+            <img id="sonido" src="imagen/sonidoDesactivado.png" alt="Pause" onClick="cambiarModoSonido()" width="20"  style="text-align:right"/>
+        </div>
     </div>
     <div class="column" >
 
@@ -29,6 +32,9 @@
     </div>
 
 </div>
+<audio id="audioFondo">
+    <source src="audio/sonido_tetris.mp3" type="audio/mpeg">
+</audio>
 
 <script>
 
