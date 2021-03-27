@@ -1,0 +1,34 @@
+<!doctype html>
+<html>
+<head>
+    <title>Tetris</title>
+    <link rel="stylesheet" href="tetris.css">
+    <script src="tetris.js"></script>
+</head>
+<body>
+
+<p id="puntuacion">Puntuación: 0</p>
+<p id="nivel">Nivel: 1</p>
+<canvas id="canvas" width="300" height="600"></canvas>
+
+
+<script>
+    // ===== main ====
+    // canvas related variables
+    var canvas = document.getElementById("canvas");
+    var ctx = canvas.getContext("2d");
+    var puntuacion=0;
+    var textPuntuacion=document.getElementById("puntuacion");
+    var nivel=1;
+    var textNivel=document.getElementById("nivel");
+
+    // clear the canvas
+    ctx.fillStyle = 'white';
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+
+    var game = new Tetris();
+    game.init();
+
+</script>
+</body>
+</html>
