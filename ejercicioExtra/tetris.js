@@ -575,6 +575,16 @@ Board.prototype.game_over = function() {
 
 }
 
+Board.prototype.juego_pausado = function() {
+	clearInterval(interval);  //Tenemos que parar el interval porq sino siue intenetando sacar piezas.
+	// Mostrar mensaje de game over en el canvas
+	ctx.font = "50px Tetris";
+	ctx.fillStyle = "black";
+	ctx.textAlign = "center";
+	ctx.fillText("PAUSE", canvas.width/2, canvas.height/2);
+
+}
+
 // ==================== Tetris ==========================
 
 function Tetris() {
@@ -638,6 +648,7 @@ Tetris.prototype.init = function(){
 
 }
 
+var tetris_paused=false;
 Tetris.prototype.key_pressed = function(e) {
 
 	var key = e.keyCode ? e.keyCode : e.which;
@@ -648,18 +659,38 @@ Tetris.prototype.key_pressed = function(e) {
 	// a mover la pieza hacia la izquierda, la derecha, abajo o a rotarla?
 	//console.log("Tecla pulsada: "+e.key+"  key: "+key);
 
-	if (key==39){  //Derecha
-		this.do_move("Right");
-	}else if (key==37){  //Izquierda
-		this.do_move("Left");
-	}else if (key==40){  //Abajo
-		this.do_move("Down");
-	}else if (key==32){  //Barra espaciadora
-		this.do_move("Space");
-	}else if (key==38){  //Arriba
-		this.do_rotate();
-	}
 	/* Introduce el código para realizar la rotación en el EJERCICIO 8. Es decir, al pulsar la flecha arriba, rotar la pieza actual */
+
+	if(!tetris_paused){  //Si el tetris no está pausado
+		console.log(tetris_paused);
+		if (key==39){  //Derecha
+			this.do_move("Right");
+		}else if (key==37){  //Izquierda
+			this.do_move("Left");
+		}else if (key==40){  //Abajo
+			this.do_move("Down");
+		}else if (key==32){  //Barra espaciadora
+			this.do_move("Space");
+		}else if (key==38){  //Arriba
+			this.do_rotate();
+		}else if (key==80){  //P  - pausar juego
+			console.log("Juego pausado");
+			this.board.juego_pausado();
+			tetris_paused=true;
+			clearInterval(interval);  //Tenemos que parar el interval porq sino sigue intenetando sacar piezas.
+
+		}
+	}else{
+		if (key==80){  //P  - pausar juego
+			console.log("Reanudar juego");
+			tetris_paused=false;
+			tetris.animate_shape();
+		}
+	}
+
+
+
+
 }
 
 Tetris.prototype.do_move = function(direction) {
