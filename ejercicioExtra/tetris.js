@@ -586,11 +586,8 @@ Board.prototype.game_over = function() {
 
 Board.prototype.juego_pausado = function() {
 	clearInterval(interval);  //Tenemos que parar el interval porq sino siue intenetando sacar piezas.
-	// Mostrar mensaje de game over en el canvas
-	ctx.font = "50px Tetris";
-	ctx.fillStyle = "black";
-	ctx.textAlign = "center";
-	ctx.fillText("PAUSE", canvas.width/2, canvas.height/2);
+	// Si escribimos en el canvas luego no podemos borrarlo entonces usare una imagen, que la pondre en visible o invidible
+	document.getElementById('pause').style.visibility='visible';
 
 }
 
@@ -695,6 +692,7 @@ Tetris.prototype.key_pressed = function(e) {
 	}else{
 		if (key==80){  //P  - pausar juego
 			console.log("Reanudar juego");
+			document.getElementById('pause').style.visibility='hidden';
 			tetris_paused=false;
 			tetris.animate_shape();
 		}
