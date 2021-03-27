@@ -26,8 +26,8 @@ Rectangle.prototype.draw = function() {
 
 	// TU CÓDIGO AQUÍ:
 	// pinta un rectángulo del color actual en pantalla en la posición px,py, con
-	// la anchura y altura actual y una línea de anchura=lineWidth. Ten en cuenta que 
-	// en este ejemplo la variable ctx es global y que guarda el contexto (context) 
+	// la anchura y altura actual y una línea de anchura=lineWidth. Ten en cuenta que
+	// en este ejemplo la variable ctx es global y que guarda el contexto (context)
 	// para pintar en el canvas.
 
 	ctx.beginPath(); //preparamos para empezar a pintar el camino
@@ -39,6 +39,16 @@ Rectangle.prototype.draw = function() {
 	ctx.fill();  //Rellenar el cuadrado
 	ctx.stroke(); //bordear el cuadrado. por defecto es color negro y no dice nada d color
 
+}
+Rectangle.prototype.draw_next = function() {
+	ctxNextPieza.beginPath(); //preparamos para empezar a pintar el camino
+	ctxNextPieza.rect(this.px,this.py,this.width,this.height); //crear un cuadrado. x: desde la raiz x cuanto s separa de la pos 0. y: desde la raiz y cuanto se separa de la pos 0. width: la anchura q cogerá el cuadrado. heigth: la altura q cogerá el cuadrado
+	ctxNextPieza.closePath(); //Cerramos
+	ctxNextPieza.fillStyle=this.color;  //ponerle color al fondo
+	ctxNextPieza.lineWidth=this.lineWidth; //Asignamos la anchura del borde
+	ctxNextPieza.strokeStyle='black';   //ejer 4 - Ahora es necesario agregar está linea, ya q sino pierde el marco y se queda de color blanco
+	ctxNextPieza.fill();  //Rellenar el cuadrado
+	ctxNextPieza.stroke(); //bordear el cuadrado. por defecto es color negro y no dice nada d color
 }
 
 
@@ -155,6 +165,10 @@ Shape.prototype.draw = function() {
 	// TU CÓDIGO AQUÍ: método que debe pintar en pantalla todos los bloques
 	// que forman la Pieza
 	this.blocks.forEach(block => block.draw());   //Recorremos todos los blockes y con el metodo .draw() los pintaremos.
+
+};
+Shape.prototype.draw_next = function() {
+	this.blocks.forEach(block => block.draw_next());
 
 };
 
@@ -417,6 +431,9 @@ Board.prototype.draw_shape = function(shape){
 	}
 	return false;
 }
+Board.prototype.draw_next_shape = function(shape){
+	shape.draw_next();
+}
 
 /*****************************
  *	 EJERCICIO 6          *
@@ -590,6 +607,8 @@ Tetris.prototype.create_new_shape = function(){
 
 }
 var tetris;
+var centroS = Math.trunc(Tetris.BOARD_WIDTH/2);
+var centroNextShape = 4;
 Tetris.prototype.init = function(){
 	tetris=this;
 	/**************
@@ -601,14 +620,18 @@ Tetris.prototype.init = function(){
 	document.addEventListener('keydown', this.key_pressed.bind(this), false);
 
 	// Obtener una nueva pieza al azar y asignarla como pieza actual
-	this.current_shape = this.create_new_shape();
+	this.next_shape = this.create_new_shape(centroNextShape);
+	// obtener una nueva pieza al azar y asignarla como pieza actual
+	this.current_shape = this.create_new_shape(centroS);
+
 
 
 	// TU CÓDIGO AQUÍ:
 	// Pintar la pieza actual en el tablero
 	// Aclaración: (Board tiene un método para pintar)
 	this.board.draw_shape(this.current_shape);  //Llamamos al metodo de pintar de board y le pasamoa la pieza actual para q la pinte
-
+	//Tendremos q crear un metodo draw para los next
+	this.board.draw_next_shape(this.next_shape);
 
 	// Crea el código del método Tetris.animate_shape (más abajo lo verás)
 	this.animate_shape();
@@ -674,15 +697,22 @@ Tetris.prototype.do_move = function(direction) {
 	}
 	if (piezaFinal){
 		this.board.add_shape(this.current_shape); //Añadimos la pieza actual al tablero;
-		this.current_shape = this.create_new_shape();//Actualizamos el valor del atributo a una nueva pieza al azar
+		var pieza = this.next_shape.constructor;
+		this.next_shape = this.create_new_shape(centroNextShape);
+		//this.current_shape = new pieza(centroS);
+		this.current_shape = new pieza(new Point(centroS,0));
+		// crear nueva pieza y asignarla a 'next_shape'
+		//this.next_shape = this.create_new_shape(centroNextShape);
 		this.board.draw_shape(this.current_shape); //Dibujar la nueva pieza en el tablero
+		ctxNextPieza.clearRect(0,0,200,200);
+		this.board.draw_next_shape(this.next_shape);
 		//Llamar a remove_complete_rows
 		this.board.remove_complete_rows();
 		// Comprobamos si la nueva pieza puede entrar o ha terminado el juego
 		if(!this.current_shape.can_move(this.board, 0, 0)){  //Como cuando pintamos una pieza. primero comprobamos que se pueda mover ahi para pintar. si no se puede mover, es que se ha acabado el huego porq no hay huevo libre
 			this.board.game_over();
-
 		}
+
 	}
 
 }
@@ -702,8 +732,6 @@ Tetris.prototype.animate_shape = function(){
 	var tetris = this;
 	interval=setInterval(function(){tetris.do_move('Down')},1000/nivel);
 }
-
-
 
 
 
