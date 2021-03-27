@@ -596,6 +596,9 @@ Board.prototype.game_over = function() {
 	ctx.textAlign = "center";
 	ctx.fillText("GAME OVER", canvas.width/2, canvas.height/2);
 
+	var nombre = prompt("Indica tu nombre para guardar la puntuación obtenida");  //Le pedimos al usuario que diga un nombre para guardar su puntuacion en el ranking
+	localStorage.setItem(puntuacion+" - "+nombre,nombre+":"+ puntuacion);  //Añadimos al localStorage el valor que queremos almacenar
+
 }
 
 Board.prototype.juego_pausado = function() {
@@ -655,7 +658,7 @@ Tetris.prototype.init = function(){
 	// obtener una nueva pieza al azar y asignarla como pieza actual
 	this.current_shape = this.create_new_shape(centroS);
 
-
+	this.ranking();  //Llamamos al metodo para escribir el ranking guardado hasta ahora
 
 	// TU CÓDIGO AQUÍ:
 	// Pintar la pieza actual en el tablero
@@ -795,6 +798,21 @@ Tetris.prototype.animate_shape = function(){
 	var tetris = this;
 	interval=setInterval(function(){tetris.do_move('Down')},1000/nivel);
 }
+var ranking=[]
+Tetris.prototype.ranking = function() {
+	// Cogeremos el localStorage y lo guardamos en un array para poder ordenar automaticamente
+	for(var i=0; i<localStorage.length;i++) {
+		ranking.push(localStorage.key(i));
+	}
+	ranking=ranking.sort();  //Ordenamos
+	ranking=ranking.reverse(); //Revertimos el orden porque lo guarda de manera ascendente
+	var i=0;
+	rText=document.getElementById('ranking');
+	rText.innerText=rText.innerText+"\n";
+	for (i=0;i<ranking.length;i++){ //Recorremos los elementos y guardaremos los 10 primeros en el texto que se escribira en pantalla
+		if(i<10){
+			rText.innerText=rText.innerText+(i+1)+"º : "+ranking[i]+"\n";
+		}
+	}
 
-
-
+};
