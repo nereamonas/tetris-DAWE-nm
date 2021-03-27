@@ -14,9 +14,11 @@ function loadAudio(url){
 function cambiarModoSonido(){
 	audioFondo=document.getElementById('audioFondo');
 	if(audioFondo.paused){
+		sonidoActivado=true;
 		audioFondo.play();
 		document.getElementById('sonido').src="imagen/sonidoActivado.png";
 	}else{
+		sonidoActivado=false;
 		audioFondo.pause();
 		document.getElementById('sonido').src="imagen/sonidoDesactivado.png";
 	}
@@ -668,6 +670,7 @@ Tetris.prototype.init = function(){
 }
 
 var tetris_paused=false;
+var sonidoActivado=false;
 Tetris.prototype.key_pressed = function(e) {
 
 	var key = e.keyCode ? e.keyCode : e.which;
@@ -698,6 +701,10 @@ Tetris.prototype.key_pressed = function(e) {
 			this.board.juego_pausado();
 			tetris_paused=true;
 			clearInterval(interval);  //Tenemos que parar el interval porq sino sigue intenetando sacar piezas.
+			//Mirar si el audio estaba activado, en ese caso pausarlo
+			if (sonidoActivado){
+				document.getElementById('audioFondo').pause();
+			}
 		}
 	}else{
 		if (key==80){  //P  - pausar juego
@@ -705,6 +712,10 @@ Tetris.prototype.key_pressed = function(e) {
 			document.getElementById('pause').style.visibility='hidden';
 			tetris_paused=false;
 			tetris.animate_shape();
+			//Mirar si el audio estaba activado antes de pausarlo, en ese caso se habra pausado, por lo que tenemos q volver a activarlo
+			if (sonidoActivado){
+				document.getElementById('audioFondo').play();
+			}
 		}
 	}
 
