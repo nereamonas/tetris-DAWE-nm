@@ -586,20 +586,22 @@ Board.prototype.remove_complete_rows = function(){
 	}
 };
 
+var gameOver=false;
+
 Board.prototype.game_over = function() {
 	loadAudio("audio/sonido_gameover.mp3").then( audio => audio.play());
 	clearInterval(interval);  //Tenemos que parar el interval porq sino siue intenetando sacar piezas.
 	// Mostrar mensaje de game over en el canvas
+	document.getElementById('gameOver').style.visibility='visible';  //Ponemos visible la foto de game over
+	gameOver=true;
+	//ctx.font = "50px Tetris";
+	//ctx.fillStyle = "black";
+	//ctx.textAlign = "center";
+	//ctx.fillText("GAME OVER", canvas.width/2, canvas.height/2);
 
-	ctx.font = "50px Tetris";
-	ctx.fillStyle = "black";
-	ctx.textAlign = "center";
-	ctx.fillText("GAME OVER", canvas.width/2, canvas.height/2);
-
-	var nombre = prompt("Indica tu nombre para guardar la puntuación obtenida");  //Le pedimos al usuario que diga un nombre para guardar su puntuacion en el ranking
-	localStorage.setItem(puntuacion+" - "+nombre,nombre+":"+ puntuacion);  //Añadimos al localStorage el valor que queremos almacenar
 
 }
+
 
 Board.prototype.juego_pausado = function() {
 	clearInterval(interval);  //Tenemos que parar el interval porq sino siue intenetando sacar piezas.
@@ -685,39 +687,40 @@ Tetris.prototype.key_pressed = function(e) {
 	//console.log("Tecla pulsada: "+e.key+"  key: "+key);
 
 	/* Introduce el código para realizar la rotación en el EJERCICIO 8. Es decir, al pulsar la flecha arriba, rotar la pieza actual */
-
-	if(!tetris_paused){  //Si el tetris no está pausado
-		console.log(tetris_paused);
-		if (key==39){  //Derecha
-			this.do_move("Right");
-		}else if (key==37){  //Izquierda
-			this.do_move("Left");
-		}else if (key==40){  //Abajo
-			this.do_move("Down");
-		}else if (key==32){  //Barra espaciadora
-			this.do_move("Space");
-		}else if (key==38){  //Arriba
-			loadAudio("audio/sonido_rotar.mp3").then( audio => audio.play());
-			this.do_rotate();
-		}else if (key==80){  //P  - pausar juego
-			console.log("Juego pausado");
-			this.board.juego_pausado();
-			tetris_paused=true;
-			clearInterval(interval);  //Tenemos que parar el interval porq sino sigue intenetando sacar piezas.
-			//Mirar si el audio estaba activado, en ese caso pausarlo
-			if (sonidoActivado){
-				document.getElementById('audioFondo').pause();
+	if(!gameOver) {
+		if (!tetris_paused) {  //Si el tetris no está pausado
+			console.log(tetris_paused);
+			if (key == 39) {  //Derecha
+				this.do_move("Right");
+			} else if (key == 37) {  //Izquierda
+				this.do_move("Left");
+			} else if (key == 40) {  //Abajo
+				this.do_move("Down");
+			} else if (key == 32) {  //Barra espaciadora
+				this.do_move("Space");
+			} else if (key == 38) {  //Arriba
+				loadAudio("audio/sonido_rotar.mp3").then(audio => audio.play());
+				this.do_rotate();
+			} else if (key == 80) {  //P  - pausar juego
+				console.log("Juego pausado");
+				this.board.juego_pausado();
+				tetris_paused = true;
+				clearInterval(interval);  //Tenemos que parar el interval porq sino sigue intenetando sacar piezas.
+				//Mirar si el audio estaba activado, en ese caso pausarlo
+				if (sonidoActivado) {
+					document.getElementById('audioFondo').pause();
+				}
 			}
-		}
-	}else{
-		if (key==80){  //P  - pausar juego
-			console.log("Reanudar juego");
-			document.getElementById('pause').style.visibility='hidden';
-			tetris_paused=false;
-			tetris.animate_shape();
-			//Mirar si el audio estaba activado antes de pausarlo, en ese caso se habra pausado, por lo que tenemos q volver a activarlo
-			if (sonidoActivado){
-				document.getElementById('audioFondo').play();
+		} else {
+			if (key == 80) {  //P  - pausar juego
+				console.log("Reanudar juego");
+				document.getElementById('pause').style.visibility = 'hidden';
+				tetris_paused = false;
+				tetris.animate_shape();
+				//Mirar si el audio estaba activado antes de pausarlo, en ese caso se habra pausado, por lo que tenemos q volver a activarlo
+				if (sonidoActivado) {
+					document.getElementById('audioFondo').play();
+				}
 			}
 		}
 	}
@@ -777,6 +780,7 @@ Tetris.prototype.do_move = function(direction) {
 		// Comprobamos si la nueva pieza puede entrar o ha terminado el juego
 		if(!this.current_shape.can_move(this.board, 0, 0)){  //Como cuando pintamos una pieza. primero comprobamos que se pueda mover ahi para pintar. si no se puede mover, es que se ha acabado el huego porq no hay huevo libre
 			this.board.game_over();
+			this.dialogoFinPartida();
 		}
 
 	}
@@ -798,6 +802,15 @@ Tetris.prototype.animate_shape = function(){
 	var tetris = this;
 	interval=setInterval(function(){tetris.do_move('Down')},1000/nivel);
 }
+
+Tetris.prototype.dialogoFinPartida=function(){
+	var nombre = prompt("Indica tu nombre para guardar la puntuación obtenida");  //Le pedimos al usuario que diga un nombre para guardar su puntuacion en el ranking
+	if (nombre!=null) {  //Si es distinto de null, significa que ha insertado un nombre para guardar la puntuacion
+		localStorage.setItem(puntuacion + " - " + nombre, nombre + ":" + puntuacion);  //Añadimos al localStorage el valor que queremos almacenar
+	}
+
+}
+
 var ranking=[]
 Tetris.prototype.ranking = function() {
 	// Cogeremos el localStorage y lo guardamos en un array para poder ordenar automaticamente
