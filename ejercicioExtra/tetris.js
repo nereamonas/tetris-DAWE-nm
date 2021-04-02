@@ -806,7 +806,30 @@ Tetris.prototype.animate_shape = function(){
 Tetris.prototype.dialogoFinPartida=function(){
 	var nombre = prompt("Indica tu nombre para guardar la puntuación obtenida");  //Le pedimos al usuario que diga un nombre para guardar su puntuacion en el ranking
 	if (nombre!=null) {  //Si es distinto de null, significa que ha insertado un nombre para guardar la puntuacion
-		localStorage.setItem(puntuacion + " - " + nombre, nombre + ":" + puntuacion);  //Añadimos al localStorage el valor que queremos almacenar
+		localStorage.setItem("tetris:"+ nombre, puntuacion);  //Añadimos al localStorage el valor que queremos almacenar
+	}
+}
+
+var ranking=[]
+Tetris.prototype.ranking = function() {
+	// Cogeremos el localStorage y lo guardamos en un array para poder ordenar automaticamente
+	for (var i=0; i < localStorage.length; i++) { //Recorremos todos los datos del localStorage
+		var key=localStorage.key(i);  //Cogemos el key del elemento numero i
+		if (key.includes("tetris")){  //Comprobamos si dentro del key esta la palabra postit para ver si pertenece a alguna que nos interese
+			var nombre= key.split(":")[0];
+			var puntuacion = nombre+" - "+localStorage.getItem(key); //Cogemos el texto del postit actual
+			ranking.push(puntuacion);
+		}
+	}
+	ranking=ranking.sort();  //Ordenamos
+	ranking=ranking.reverse(); //Revertimos el orden porque lo guarda de manera ascendente
+	var i=0;
+	rText=document.getElementById('ranking');
+	rText.innerText=rText.innerText+"\n";
+	for (i=0;i<ranking.length;i++){ //Recorremos los elementos y guardaremos los 10 primeros en el texto que se escribira en pantalla
+		if(i<10){
+			rText.innerText=rText.innerText+(i+1)+"º : "+ranking[i]+"\n";
+		}
 	}
 
-}
+};
