@@ -816,7 +816,7 @@ Tetris.prototype.ranking = function() {
 	for (var i=0; i < localStorage.length; i++) { //Recorremos todos los datos del localStorage
 		var key=localStorage.key(i);  //Cogemos el key del elemento numero i
 		if (key.includes("tetris")){  //Comprobamos si dentro del key esta la palabra postit para ver si pertenece a alguna que nos interese
-			var nombre= key.split(":")[0];
+			var nombre= key.split(":")[1];
 			var puntuacion = nombre+" - "+localStorage.getItem(key); //Cogemos el texto del postit actual
 			ranking.push(puntuacion);
 		}
