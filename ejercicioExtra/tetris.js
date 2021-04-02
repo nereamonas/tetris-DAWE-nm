@@ -810,22 +810,3 @@ Tetris.prototype.dialogoFinPartida=function(){
 	}
 
 }
-
-var ranking=[]
-Tetris.prototype.ranking = function() {
-	// Cogeremos el localStorage y lo guardamos en un array para poder ordenar automaticamente
-	for(var i=0; i<localStorage.length;i++) {
-		ranking.push(localStorage.key(i));
-	}
-	ranking=ranking.sort();  //Ordenamos
-	ranking=ranking.reverse(); //Revertimos el orden porque lo guarda de manera ascendente
-	var i=0;
-	rText=document.getElementById('ranking');
-	rText.innerText=rText.innerText+"\n";
-	for (i=0;i<ranking.length;i++){ //Recorremos los elementos y guardaremos los 10 primeros en el texto que se escribira en pantalla
-		if(i<10){
-			rText.innerText=rText.innerText+(i+1)+"º : "+ranking[i]+"\n";
-		}
-	}
-
-};
