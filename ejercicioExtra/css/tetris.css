@@ -82,8 +82,8 @@ body {
 
 .buttonJugarMultiJug {
     color: black;
-    border: 2px solid #871eff;
-    background-color: #dabaff;
+    border: 2px solid #f01eff;
+    background-color: #fbc2ff;
     font-size: 150%;
     text-align: center;
     width: 100%;
@@ -91,7 +91,7 @@ body {
 }
 
 .buttonJugarMultiJug:hover {
-    background-color: #871eff;
+    background-color: #f01eff;
     color: white;
 }
 
@@ -101,7 +101,7 @@ body {
     text-align: center;
 }
 .centerUnJug {
-    padding: 70px 150px 520px;
+    padding: 30px 50px 560px;
     border: 3px solid #ff801e;
 }
 
@@ -112,15 +112,15 @@ body {
     border: 2px solid #ff801e;
 }
 .centerMultiJug {
-    padding: 70px 150px 520px;
-    border: 3px solid #871eff;
+    padding: 30px 50px 560px;
+    border: 3px solid #f01eff;
 }
 
 .rankingMultiJug {
     padding: 10px 10px;
     background-color: white;
     font-size: large;
-    border: 2px solid #871eff;
+    border: 2px solid #f01eff;
 }
 
 
@@ -132,5 +132,10 @@ body {
 
 .logoTetris {
     width: 600px;
+    text-align: center;
+}
+
+.tecladoInstrucciones {
+    width: 525px;
     text-align: center;
 }
