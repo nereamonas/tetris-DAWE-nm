@@ -14,7 +14,6 @@ function getRanking() {
     ranking=ranking.sort();  //Ordenamos
     ranking=ranking.reverse(); //Revertimos el orden porque lo guarda de manera ascendente
     var i=0;
-    rText.innerText=rText.innerText+"\n";
     for (i=0;i<ranking.length;i++){ //Recorremos los elementos y guardaremos los 10 primeros en el texto que se escribira en pantalla
         if(i<10){
             rText.innerText=rText.innerText+(i+1)+"º : "+ranking[i]+"\n";

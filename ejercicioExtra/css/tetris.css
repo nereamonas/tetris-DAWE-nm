@@ -65,32 +65,72 @@ body {
 }
 
 
-.buttonJugar {
+.buttonJugarUnJug {
     color: black;
     border: 2px solid #ff801e;
-    background-color: #fce4d1;
+    background-color: #f8d6bc;
     font-size: 150%;
     text-align: center;
+    width: 100%;
+
 }
 
-.buttonJugar:hover {
+.buttonJugarUnJug:hover {
     background-color: #ff801e;
     color: white;
 }
 
+.buttonJugarMultiJug {
+    color: black;
+    border: 2px solid #871eff;
+    background-color: #dabaff;
+    font-size: 150%;
+    text-align: center;
+    width: 100%;
+
+}
+
+.buttonJugarMultiJug:hover {
+    background-color: #871eff;
+    color: white;
+}
+
 .center {
-    padding: 70px 0;
+    padding: 70px 0px 225px;
     border: 3px solid green;
     text-align: center;
 }
-.center2 {
-    padding: 70px 150px;
-    border: 3px solid green;
+.centerUnJug {
+    padding: 70px 150px 520px;
+    border: 3px solid #ff801e;
 }
 
-.ranking {
+.rankingUnJug {
     padding: 10px 10px;
     background-color: white;
     font-size: large;
+    border: 2px solid #ff801e;
+}
+.centerMultiJug {
+    padding: 70px 150px 520px;
+    border: 3px solid #871eff;
 }
 
+.rankingMultiJug {
+    padding: 10px 10px;
+    background-color: white;
+    font-size: large;
+    border: 2px solid #871eff;
+}
+
+
+.column2 {
+    width: 50%;
+    float: left;
+    padding: 10px;
+}
+
+.logoTetris {
+    width: 600px;
+    text-align: center;
+}
