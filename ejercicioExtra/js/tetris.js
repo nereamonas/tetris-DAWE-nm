@@ -594,7 +594,7 @@ Board.prototype.game_over = function() {
 	// Mostrar mensaje de game over en el canvas
 	document.getElementById('gameOver').style.visibility='visible';  //Ponemos visible la foto de game over
 	gameOver=true;
-	//ctx.font = "50px Tetris";
+	//ctx.font = "50px UnJugadorTetris";
 	//ctx.fillStyle = "black";
 	//ctx.textAlign = "center";
 	//ctx.fillText("GAME OVER", canvas.width/2, canvas.height/2);
@@ -610,7 +610,7 @@ Board.prototype.juego_pausado = function() {
 
 }
 
-// ==================== Tetris ==========================
+// ==================== UnJugadorTetris ==========================
 
 function Tetris() {
 	this.board = new Board(Tetris.BOARD_WIDTH, Tetris.BOARD_HEIGHT);
@@ -625,7 +625,7 @@ Tetris.BOARD_COLOR='white';
 Tetris.prototype.create_new_shape = function(){
 
 	// TU CÓDIGO AQUÍ:
-	// Elegir un nombre de pieza al azar del array Tetris.SHAPES
+	// Elegir un nombre de pieza al azar del array UnJugadorTetris.SHAPES
 	// Crear una instancia de ese tipo de pieza (x = centro del tablero, y = 0)
 	// Devolver la referencia de esa pieza nueva
 
@@ -660,8 +660,6 @@ Tetris.prototype.init = function(){
 	// obtener una nueva pieza al azar y asignarla como pieza actual
 	this.current_shape = this.create_new_shape(centroS);
 
-	this.ranking();  //Llamamos al metodo para escribir el ranking guardado hasta ahora
-
 	// TU CÓDIGO AQUÍ:
 	// Pintar la pieza actual en el tablero
 	// Aclaración: (Board tiene un método para pintar)
@@ -669,7 +667,7 @@ Tetris.prototype.init = function(){
 	//Tendremos q crear un metodo draw para los next
 	this.board.draw_next_shape(this.next_shape);
 
-	// Crea el código del método Tetris.animate_shape (más abajo lo verás)
+	// Crea el código del método UnJugadorTetris.animate_shape (más abajo lo verás)
 	this.animate_shape();
 
 }
@@ -689,7 +687,6 @@ Tetris.prototype.key_pressed = function(e) {
 	/* Introduce el código para realizar la rotación en el EJERCICIO 8. Es decir, al pulsar la flecha arriba, rotar la pieza actual */
 	if(!gameOver) {
 		if (!tetris_paused) {  //Si el tetris no está pausado
-			console.log(tetris_paused);
 			if (key == 39) {  //Derecha
 				this.do_move("Right");
 			} else if (key == 37) {  //Izquierda
@@ -734,8 +731,8 @@ Tetris.prototype.do_move = function(direction) {
 
 	// TU CÓDIGO AQUÍ: el usuario ha pulsado la tecla Left, Right o Down (izquierda,
 	// derecha o abajo). Tenemos que mover la pieza en la dirección correspondiente
-	// a esa tecla. Recuerda que el array Tetris.DIRECTION guarda los desplazamientos
-	// en cada dirección, por tanto, si accedes a Tetris.DIRECTION[direction],
+	// a esa tecla. Recuerda que el array UnJugadorTetris.DIRECTION guarda los desplazamientos
+	// en cada dirección, por tanto, si accedes a UnJugadorTetris.DIRECTION[direction],
 	// obtendrás el desplazamiento (dx, dy). A continuación analiza si la pieza actual
 	// se puede mover con ese desplazamiento. En caso afirmativo, mueve la pieza.
 
@@ -804,34 +801,9 @@ Tetris.prototype.animate_shape = function(){
 }
 
 Tetris.prototype.dialogoFinPartida=function(){
+	console.log("FIN PARTIDA J1");
 	var nombre = prompt("Indica tu nombre para guardar la puntuación obtenida");  //Le pedimos al usuario que diga un nombre para guardar su puntuacion en el ranking
 	if (nombre!=="") {  //Si es distinto de null, significa que ha insertado un nombre para guardar la puntuacion
-		localStorage.setItem("tetris:"+ nombre, puntuacion);  //Añadimos al localStorage el valor que queremos almacenar
+		localStorage.setItem("tetris"+localStorage.length, puntuacion+" puntos - "+nombre);  //Añadimos al localStorage el valor que queremos almacenar
 	}
-	this.ranking();  //Llamos al metodo para que actualice el ranking
 }
-
-var ranking=[]
-Tetris.prototype.ranking = function() {
-	// Cogeremos el localStorage y lo guardamos en un array para poder ordenar automaticamente
-	rText=document.getElementById('ranking');
-	rText.innerText="";
-	for (var i=0; i < localStorage.length; i++) { //Recorremos todos los datos del localStorage
-		var key=localStorage.key(i);  //Cogemos el key del elemento numero i
-		if (key.includes("tetris")){  //Comprobamos si dentro del key esta la palabra postit para ver si pertenece a alguna que nos interese
-			var nombre= key.split(":")[1];
-			var puntuacion = localStorage.getItem(key)+" puntos - "+nombre; //Cogemos el texto del postit actual
-			ranking.push(puntuacion);
-		}
-	}
-	ranking=ranking.sort();  //Ordenamos
-	ranking=ranking.reverse(); //Revertimos el orden porque lo guarda de manera ascendente
-	var i=0;
-	rText.innerText=rText.innerText+"\n";
-	for (i=0;i<ranking.length;i++){ //Recorremos los elementos y guardaremos los 10 primeros en el texto que se escribira en pantalla
-		if(i<10){
-			rText.innerText=rText.innerText+(i+1)+"º : "+ranking[i]+"\n";
-		}
-	}
-
-};

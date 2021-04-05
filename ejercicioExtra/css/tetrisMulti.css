@@ -1,0 +1,23 @@
+#canvas {
+    border:1px solid #000000;
+}
+#canvasJ2 {
+    border:1px solid #000000;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    grid-gap: 10px;
+    padding: 10px;
+}
+
+.grid-container > div {
+    padding: 10px 0;
+}
+
+
