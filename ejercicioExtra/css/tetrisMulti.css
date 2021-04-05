@@ -1,3 +1,8 @@
+body {
+    background-image: url("../imagen/fondo.png");
+    background-repeat: no-repeat;
+    background-size: 85%;
+}
 #canvas {
     border:1px solid #000000;
 }
