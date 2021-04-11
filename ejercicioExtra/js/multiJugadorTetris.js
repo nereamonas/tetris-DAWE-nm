@@ -519,6 +519,7 @@ BoardJ2.prototype.delete_row = function(y){
 // TU CÓDIGO AQUÍ: Borra del grid y de pantalla todos los bloques de la fila y
     for (var x = 0; x < this.width; x++) { //Recorreremos todas las x
         item = x + "," + y;  //Sacamos el item
+        removeBloquesActualesJ2(this.grid[item]);//Eliminamos tambien de la lista de bloques pintados actualmente en el canvas
         this.grid[item].erase();  //Importante borramos el actual elemento del dibujo
         delete this.grid[item]; //Lo eliminamos del grid
     }
@@ -665,7 +666,9 @@ TetrisJ2.prototype.init = function(){
     // TU CÓDIGO AQUÍ:
     // Pintar la pieza actual en el tablero
     // Aclaración: (Board tiene un método para pintar)
-    this.board.draw_shape(this.current_shape);  //Llamamos al metodo de pintar de board y le pasamoa la pieza actual para q la pinte
+    //this.board.draw_shape(this.current_shape);  //Dibujar la nueva pieza en el tablero. Ya no llamaremos a este metodo porque se llama automaticamente para evitar los fallos de dibujado
+    pushBloquesActualesJ2(this.current_shape); //Añadimos la nueva pieza a la lista de piezas dibujadas actualmente
+
     //Tendremos q crear un metodo draw para los next
     this.board.draw_next_shape(this.next_shape);
 
@@ -770,8 +773,9 @@ TetrisJ2.prototype.do_move = function(direction) {
         //this.current_shape = new pieza(centroS);
         this.current_shape = new pieza(new PointJ2(centroS,0));
         // crear nueva pieza y asignarla a 'next_shape'
-        //this.next_shape = this.create_new_shape(centroNextShape);
-        this.board.draw_shape(this.current_shape); //Dibujar la nueva pieza en el tablero
+
+        //this.board.draw_shape(this.current_shape); //Dibujar la nueva pieza en el tablero. Ya no llamaremos a este metodo porque se llama automaticamente para evitar los fallos de dibujado
+        pushBloquesActualesJ2(this.current_shape); //Añadimos la nueva pieza a la lista de piezas dibujadas actualmente
         ctxNextPiezaJ2.clearRect(0,0,200,200);
         this.board.draw_next_shape(this.next_shape);
         //Llamar a remove_complete_rows
@@ -810,3 +814,22 @@ TetrisJ2.prototype.dialogoFinPartida=function(){
         localStorage.setItem("tetris"+localStorage.length, puntuacionJ2+" puntos - "+nombre);  //Añadimos al localStorage el valor que queremos almacenar. he puesto tetris+localStorage.length, para ponerle como un identificador y que aunq pongas el mismo nombre y mismos puntos siempre lo guarde
     }
 }
+
+var bloquesActualesJ2 = new Array();  //Array donde guardaremos todos los bloques que están actualmente pintados en el tablero
+
+function pushBloquesActualesJ2(newshape){ //Le pasamos una pieza y guardaremos cada bloque de la pieza en el array bloquesActuales
+    newshape.blocks.forEach(block => bloquesActualesJ2.push(block));
+}
+
+function removeBloquesActualesJ2(removeBlock){ //Le pasamos una pieza y guardaremos cada bloque de la pieza en el array bloquesActuales
+    posicion = bloquesActualesJ2.indexOf(removeBlock); //Buscamos la posicion del array donde esta ese bloque
+    bloquesActualesJ2.splice(posicion, 1); //Con splice borramos el elemento de una posicion concreta
+}
+
+function pintarBloquesActualesJ2(){
+    ctx.clearRect(0, 0, ctx.width, ctx.height); //Borramos el canvas
+    bloquesActualesJ2.forEach(block => block.draw()); //Recorremos todos los bloques del array bloquesActuales y lo pintamos en el canvas
+    requestAnimationFrame(pintarBloquesActuales); //Volvemos a llamar al metodo pintar, para que este continuamente llamandolo
+}
+
+requestAnimationFrame(pintarBloquesActualesJ2);
