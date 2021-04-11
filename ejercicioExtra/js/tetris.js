@@ -824,6 +824,7 @@ function removeBloquesActuales(removeBlock){ //Le pasamos una pieza y guardaremo
 }
 
 function pintarBloquesActuales(){
+	var ctx = canvas.getContext("2d");
 	ctx.clearRect(0, 0, ctx.width, ctx.height); //Borramos el canvas
 	bloquesActuales.forEach(block => block.draw()); //Recorremos todos los bloques del array bloquesActuales y lo pintamos en el canvas
 	requestAnimationFrame(pintarBloquesActuales); //Volvemos a llamar al metodo pintar, para que este continuamente llamandolo

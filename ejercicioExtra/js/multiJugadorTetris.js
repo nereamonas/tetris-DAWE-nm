@@ -827,9 +827,10 @@ function removeBloquesActualesJ2(removeBlock){ //Le pasamos una pieza y guardare
 }
 
 function pintarBloquesActualesJ2(){
-    ctx.clearRect(0, 0, ctx.width, ctx.height); //Borramos el canvas
+    var ctxJ2 = canvasJ2.getContext("2d");
+    ctxJ2.clearRect(0, 0, ctxJ2.width, ctxJ2.height); //Borramos el canvas
     bloquesActualesJ2.forEach(block => block.draw()); //Recorremos todos los bloques del array bloquesActuales y lo pintamos en el canvas
-    requestAnimationFrame(pintarBloquesActuales); //Volvemos a llamar al metodo pintar, para que este continuamente llamandolo
+    requestAnimationFrame(pintarBloquesActualesJ2); //Volvemos a llamar al metodo pintar, para que este continuamente llamandolo
 }
 
 requestAnimationFrame(pintarBloquesActualesJ2);
