@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>test1</title>
+  <link rel="stylesheet" href="https://code.jquery.com/qunit/qunit-2.15.0.css">
+  <script src="https://code.jquery.com/qunit/qunit-2.15.0.js"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+  <script src="../testttttt/qunit-assert-canvas.js"></script>
+  <script src="../ejercicio8/tetris.js"></script>
+</head>
+<body>
+<canvas id="canvas" width="302" height="300"></canvas>
+<div id="qunit"></div>
+<div id="qunit-fixture"></div>
+
+<script>
+  var canvas = document.getElementById("canvas");
+  var ctx = canvas.getContext("2d");
+
+
+
+
+  QUnit.module('EJERCICIO 8.1', function() {
+
+      // clear the canvas
+      ctx.fillStyle = 'white';
+      ctx.fillRect(0,0,canvas.width,canvas.height); //
+
+
+      game = new Tetris();
+      game.init();
+
+      // Hemos creado un pequeño tablero de 10x5 para estos tests
+      ctx.lineWidth = 1;
+      ctx.strokeStyle = 'blue';
+      for (var x=0; x < Tetris.BOARD_WIDTH*30; x=x+30){
+          ctx.beginPath();
+          ctx.moveTo(x, 0);
+          ctx.lineTo(x, Tetris.BOARD_HEIGHT*30);
+          ctx.stroke();
+      }
+
+      for (var y=0; y < Tetris.BOARD_HEIGHT*30; y=y+30){
+          ctx.beginPath();
+          ctx.moveTo(0, y);
+          ctx.lineTo(Tetris.BOARD_WIDTH*30, y);
+          ctx.stroke();
+      }
+
+
+      QUnit.test('Testing: las funciones de rotación existen ', function(assert) {
+          assert.ok( game.do_rotate instanceof Function, "Tetris.do_rotate existe");
+          assert.ok( game.current_shape.can_rotate instanceof Function, "Shape.can_rotate existe");
+          assert.ok( game.current_shape.rotate instanceof Function, "Shape.rotate existe");
+      });
+
+      QUnit.test('Testeando la rotación', function(assert) {
+
+          // Para este test hemos creado un tablero de 10x10.
+          // Y las piezas se generan al azar (no siempre la S)
+
+          var pieza = game.create_new_shape();
+
+          assert.ok(! game.current_shape.can_rotate(game.board) , "No deberíamos poder rotar");
+
+          // movemos la pieza 4 veces hacia abajo
+          for (var i=1; i <= 4; i++)
+              game.do_move("Down");
+
+
+          if (!( pieza instanceof O_Shape))
+              assert.ok(game.current_shape.can_rotate(game.board) , "Ahora deberíamos poder rotar");
+
+      });
+
+  });
+
+  QUnit.module('EJERCICIO 8.2', function() {
+
+      // clear the canvas
+      ctx.fillStyle = 'white';
+      ctx.fillRect(0,0,canvas.width,canvas.height); //
+
+
+      var game = new Tetris();
+      game.init();
+
+      // Hemos creado un pequeño tablero de 10x5 para estos tests
+      ctx.lineWidth = 1;
+      ctx.strokeStyle = 'blue';
+      for (var x=0; x < Tetris.BOARD_WIDTH*30; x=x+30){
+          ctx.beginPath();
+          ctx.moveTo(x, 0);
+          ctx.lineTo(x, Tetris.BOARD_HEIGHT*30);
+          ctx.stroke();
+      }
+
+      for (var y=0; y < Tetris.BOARD_HEIGHT*30; y=y+30){
+          ctx.beginPath();
+          ctx.moveTo(0, y);
+          ctx.lineTo(Tetris.BOARD_WIDTH*30, y);
+          ctx.stroke();
+      }
+
+
+      QUnit.test('Testing: la función Tetris.animate_shape existe', function(assert) {
+          assert.ok( game.animate_shape instanceof Function, "Tetris.animate_shape existe");
+      });
+
+
+
+      QUnit.test('Testeando la rotación', function(assert) {
+
+          var done = assert.async();
+
+          // Para este test hemos creado un tablero de 10x10.
+          // Y las piezas se generan al azar (no siempre la S)
+
+          var pieza = game.create_new_shape();
+
+          setTimeout(function() {
+              var gridLength = 0; for(var block in game.board.grid) gridLength++;
+              assert.ok( gridLength == 4 , "El temporizador se ha puesto en marcha y la pieza original ha caído hasta abajo sola" );
+              done();
+          }, Tetris.BOARD_HEIGHT * 1000 );
+
+      });
+  });
+
+  QUnit.module('EJERCICIO 8.3', function() {
+
+      // clear the canvas
+      ctx.fillStyle = 'white';
+      ctx.fillRect(0,0,canvas.width,canvas.height); //
+
+
+      game = new Tetris();
+      game.init();
+
+      // Hemos creado un pequeño tablero de 10x5 para estos tests
+      ctx.lineWidth = 1;
+      ctx.strokeStyle = 'blue';
+      for (var x=0; x < Tetris.BOARD_WIDTH*30; x=x+30){
+          ctx.beginPath();
+          ctx.moveTo(x, 0);
+          ctx.lineTo(x, Tetris.BOARD_HEIGHT*30);
+          ctx.stroke();
+      }
+
+      for (var y=0; y < Tetris.BOARD_HEIGHT*30; y=y+30){
+          ctx.beginPath();
+          ctx.moveTo(0, y);
+          ctx.lineTo(Tetris.BOARD_WIDTH*30, y);
+          ctx.stroke();
+      }
+
+
+      QUnit.test('Testing: las funciones existen', function(assert) {
+          assert.ok( game.board.is_row_complete instanceof Function, "Board.is_row_complete existe");
+          assert.ok( game.board.delete_row instanceof Function, "Board.delete_row existe");
+          assert.ok( game.board.move_down_rows instanceof Function, "Board.move_down_rows existe");
+          assert.ok( game.board.remove_complete_rows instanceof Function, "Board.remove_complete_rows existe");
+
+      });
+
+      QUnit.test('Testeando las funciones de línea completa', function(assert) {
+
+          // Para este test hemos creado un tablero de 10x10.
+          // Creamos dos filas completas de bloques en la parte inferior del grid
+
+          for (var fila=Tetris.BOARD_HEIGHT-2; fila<Tetris.BOARD_HEIGHT; fila++){
+              for (var i=0; i<Tetris.BOARD_WIDTH; i++){
+                  var pos = new Point(i, fila);
+                  game.board.grid["".concat(i,",",fila)] = new Block(pos,"blue");
+              }
+          }
+
+          assert.ok( game.board.is_row_complete(Tetris.BOARD_HEIGHT-1) , "La última fila es completa" );
+          assert.ok( game.board.is_row_complete(Tetris.BOARD_HEIGHT-2) , "La penúltima fila es completa" );
+
+          // borrar las filas completas
+          game.board.remove_complete_rows();
+
+          assert.ok(! game.board.is_row_complete(Tetris.BOARD_HEIGHT-1) , "La última fila no es completa" );
+          assert.ok(! game.board.is_row_complete(Tetris.BOARD_HEIGHT-2) , "La penúltima fila no es completa" );
+
+      });
+
+  });
+
+
+
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>test1</title>
+  <link rel="stylesheet" href="https://code.jquery.com/qunit/qunit-2.15.0.css">
+  <script src="https://code.jquery.com/qunit/qunit-2.15.0.js"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+  <script src="../testttttt/qunit-assert-canvas.js"></script>
+  <script src="../ejercicio3/tetris.js"></script>
+</head>
+<body>
+<canvas id="canvas" width="300" height="600"></canvas>
+<div id="qunit"></div>
+<div id="qunit-fixture"></div>
+
+<script>
+  var canvas = document.getElementById("canvas");
+  var ctx = canvas.getContext("2d");
+
+
+
+  QUnit.module('EJERCICIO 3', function() {
+
+      // clear the canvas
+      ctx.fillStyle = 'white';
+      ctx.fillRect(0,0,canvas.width,canvas.height);
+
+      var game = new Tetris();
+      game.init();
+
+      QUnit.test( "Existencia de Clases", function( assert ) {
+          assert.ok( game instanceof Tetris, "Passed!" );
+      });
+
+      QUnit.test( "Existencia de atributo current_shape", function( assert ) {
+          assert.ok( game.current_shape instanceof Shape, "Es una pieza" );
+          for (t of Tetris.SHAPES)
+              if (t.name == game.current_shape.constructor.name)
+                  assert.equal(t, game.current_shape.constructor,"Es una de las 7 posibles");
+      });
+
+      QUnit.test('pixel equal test', function(assert) {
+          // assert.pixelEqual(canvas, x, y, r, g, b, a, message);
+          // ctx.fillStyle = 'black';
+          // ctx.fillRect(15*5*2+10,15,4,4);
+          pixelEqual(canvas, 15, 45, 255, 255, 255, 255, "White");
+          notPixelEqual(canvas, 15*5*2+10, 10, 255, 255, 255, 255, "! White");
+
+      });
+
+  });
+
+</script>
+</body>
+</html>

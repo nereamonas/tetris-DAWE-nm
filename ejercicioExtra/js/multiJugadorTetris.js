@@ -810,7 +810,7 @@ TetrisJ2.prototype.dialogoFinPartida=function(){
     console.log("FIN PARTIDA J2");
     var nombre = prompt("Indica tu nombre para guardar la puntuación obtenida");  //Le pedimos al usuario que diga un nombre para guardar su puntuacion en el ranking
 
-    if (nombre!=="") {  //Si es distinto de null, significa que ha insertado un nombre para guardar la puntuacion
+    if (nombre!="" || nombre==null) {  //Si es distinto de null, significa que ha insertado un nombre para guardar la puntuacion
         localStorage.setItem("tetris"+localStorage.length, puntuacionJ2+" puntos - "+nombre);  //Añadimos al localStorage el valor que queremos almacenar. he puesto tetris+localStorage.length, para ponerle como un identificador y que aunq pongas el mismo nombre y mismos puntos siempre lo guarde
     }
 }

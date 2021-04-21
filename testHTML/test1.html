@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>test1</title>
+  <link rel="stylesheet" href="https://code.jquery.com/qunit/qunit-2.15.0.css">
+  <script src="https://code.jquery.com/qunit/qunit-2.15.0.js"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+  <script src="../testttttt/qunit-assert-canvas.js"></script>
+  <script src="../ejercicio1/tetris.js"></script>
+</head>
+<body>
+<canvas id="canvas" width="300" height="600"></canvas>
+<div id="qunit"></div>
+<div id="qunit-fixture"></div>
+
+<script>
+  var canvas = document.getElementById("canvas");
+  var ctx = canvas.getContext("2d");
+
+  QUnit.module('EJERCICIO 1', function() {
+    ctx.fillStyle = 'white';
+    ctx.fillRect(0,0,canvas.width,canvas.height); //
+    var block1 = new Block(new Point(0,0), 'red'),
+            block2 = new Block(new Point(1,1), 'blue'),
+            block3 = new Block(new Point(2,2), 'green');
+
+    block1.draw();
+    block2.draw();
+    block3.draw();
+
+    QUnit.test( "Subclases", function( assert ) {
+      assert.ok( block1 instanceof Block , "Passed!" );
+      assert.ok( block1 instanceof Rectangle , "Passed!" );
+
+      assert.ok( block2 instanceof Block , "Passed!" );
+      assert.ok( block2 instanceof Rectangle , "Passed!" );
+    });
+
+    QUnit.test('pixel equal test', function(assert) {
+      // assert.pixelEqual(canvas, x, y, r, g, b, a, message);
+      pixelEqual(canvas, 15, 15, 255, 0, 0, 255, "Passed!");
+      pixelEqual(canvas, 45, 45, 0, 0, 255, 255, "Passed!");
+      pixelEqual(canvas, 75, 75, 0, 128, 0, 255, "Passed!");
+    });
+  });
+
+</script>
+</body>
+</html>

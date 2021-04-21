@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>test1</title>
+  <link rel="stylesheet" href="https://code.jquery.com/qunit/qunit-2.15.0.css">
+  <script src="https://code.jquery.com/qunit/qunit-2.15.0.js"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+  <script src="../testttttt/qunit-assert-canvas.js"></script>
+  <script src="../ejercicio2/tetris.js"></script>
+</head>
+<body>
+<canvas id="canvas" width="300" height="600"></canvas>
+<div id="qunit"></div>
+<div id="qunit-fixture"></div>
+
+<script>
+  var canvas = document.getElementById("canvas");
+  var ctx = canvas.getContext("2d");
+
+
+  QUnit.module('EJERCICIO 2.1', function() {
+      // clear the canvas
+      ctx.fillStyle = 'white';
+      ctx.fillRect(0,0,canvas.width,canvas.height); //
+
+      var shape = new I_Shape(new Point(3, 1));
+      shape.draw();
+
+      QUnit.test( "Subclases", function( assert ) {
+          assert.ok( shape instanceof Shape, "Passed!" );
+          assert.ok( shape instanceof I_Shape , "Passed!" );
+      });
+
+      QUnit.test('pixel equal test', function(assert) {
+          // assert.pixelEqual(canvas, x, y, r, g, b, a, message);
+          pixelEqual(canvas, 15, 45, 255, 255, 255, 255, "Blanco");
+          pixelEqual(canvas, 45, 45, 0, 0, 255, 255, "Azul1");
+          pixelEqual(canvas, 75, 45, 0, 0, 255, 255, "Azul2");
+          pixelEqual(canvas, 105, 45, 0, 0, 255, 255, "Azul3");
+          pixelEqual(canvas, 135, 45, 0, 0, 255, 255, "Azul4");
+      });
+
+  });
+
+  QUnit.module('EJERCICIO 2.2', function() {
+
+      // canvas related variables
+      var canvas = document.getElementById("canvas");
+      canvas.setAttribute("width",1000);
+      var ctx = canvas.getContext("2d");
+
+      // clear the canvas
+      ctx.fillStyle = 'white';
+      ctx.fillRect(0,0,canvas.width,canvas.height); //
+
+      var tetrominos = [I_Shape, J_Shape, L_Shape, O_Shape, S_Shape, T_Shape, Z_Shape];
+      x = 3;
+      var shapes = [];
+      tetrominos.forEach( function ( tetromino ) {
+          shape = new tetromino(new Point(x, 1));
+          shapes.push(shape);
+          shape.draw();
+          x += 4;
+      });
+
+      QUnit.test( "Subclases", function( assert ) {
+          assert.ok( shapes[0] instanceof Shape, "Passed!" );
+          assert.ok( shapes[0] instanceof I_Shape , "Passed!" );
+
+          assert.ok( shapes[1] instanceof Shape, "Passed!" );
+          assert.ok( shapes[1] instanceof J_Shape , "Passed!" );
+
+          assert.ok( shapes[2] instanceof Shape, "Passed!" );
+          assert.ok( shapes[2] instanceof L_Shape , "Passed!" );
+
+          assert.ok( shapes[3] instanceof Shape, "Passed!" );
+          assert.ok( shapes[3] instanceof O_Shape , "Passed!" );
+
+          assert.ok( shapes[4] instanceof Shape, "Passed!" );
+          assert.ok( shapes[4] instanceof S_Shape , "Passed!" );
+
+          assert.ok( shapes[5] instanceof Shape, "Passed!" );
+          assert.ok( shapes[5] instanceof T_Shape , "Passed!" );
+
+          assert.ok( shapes[6] instanceof Shape, "Passed!" );
+          assert.ok( shapes[6] instanceof Z_Shape , "Passed!" );
+      });
+
+      QUnit.test('pixel equal test', function(assert) {
+          // assert.pixelEqual(canvas, x, y, r, g, b, a, message);
+          //    ctx.fillStyle = 'black';
+          //    ctx.fillRect(15*8*2,45,4,4);
+          pixelEqual(canvas, 15, 45, 255, 255, 255, 255, "White");
+          pixelEqual(canvas, 15*3*2, 45, 0, 0, 255, 255, "Blue");
+          pixelEqual(canvas, 15*8*2, 45, 255, 165, 0, 255, "Orange");
+          pixelEqual(canvas, 15*12*2, 45, 0, 255, 255, 255, "Cyan");
+          pixelEqual(canvas, 15*16*2, 45, 255, 0, 0, 255, "Red");
+          pixelEqual(canvas, 15*21*2, 45, 0, 128, 0, 255, "Green");
+          pixelEqual(canvas, 15*24*2, 45, 255, 255, 0, 255, "Yellow");
+          pixelEqual(canvas, 15*28*2, 45, 255, 0, 255, 255, "Magenta");
+      });
+
+
+  });
+
+</script>
+</body>
+</html>

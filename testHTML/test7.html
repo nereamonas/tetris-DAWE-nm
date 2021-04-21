@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>test1</title>
+  <link rel="stylesheet" href="https://code.jquery.com/qunit/qunit-2.15.0.css">
+  <script src="https://code.jquery.com/qunit/qunit-2.15.0.js"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+  <script src="../testttttt/qunit-assert-canvas.js"></script>
+  <script src="../ejercicio7/tetris.js"></script>
+</head>
+<body>
+<canvas id="canvas" width="302" height="300"></canvas>
+<div id="qunit"></div>
+<div id="qunit-fixture"></div>
+
+<script>
+  var canvas = document.getElementById("canvas");
+  var ctx = canvas.getContext("2d");
+
+
+
+
+  QUnit.module('EJERCICIO 7', function() {
+
+      // clear the canvas
+      ctx.fillStyle = 'white';
+      ctx.fillRect(0,0,canvas.width,canvas.height); //
+
+
+      game = new Tetris();
+      game.init();
+
+      // Hemos creado un pequeño tablero de 10x5 para estos tests
+      ctx.lineWidth = 1;
+      ctx.strokeStyle = 'blue';
+      for (var x=0; x < Tetris.BOARD_WIDTH*30; x=x+30){
+          ctx.beginPath();
+          ctx.moveTo(x, 0);
+          ctx.lineTo(x, Tetris.BOARD_HEIGHT*30);
+          ctx.stroke();
+      }
+
+      for (var y=0; y < Tetris.BOARD_HEIGHT*30; y=y+30){
+          ctx.beginPath();
+          ctx.moveTo(0, y);
+          ctx.lineTo(Tetris.BOARD_WIDTH*30, y);
+          ctx.stroke();
+      }
+
+
+      QUnit.test('Testing Board.can_move ', function(assert) {
+
+          // Para este test hemos creado un tablero de 10x10.
+          // Y las piezas se generan al azar (no siempre la S)
+
+          var pieza = game.create_new_shape();
+          // metemos la nueva pieza al grid para hacer el test
+          game.board.add_shape(pieza);
+          // no deberíamos poder mover una pieza a la posición superior del tablero
+          assert.ok(!game.board.can_move(5,0), "no podemos mover una pieza a una posición ya ocupada");
+
+      });
+
+
+  });
+
+
+
+</script>
+</body>
+</html>
