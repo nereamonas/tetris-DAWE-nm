@@ -807,7 +807,8 @@ Tetris.prototype.animate_shape = function(){
 Tetris.prototype.dialogoFinPartida=function(){
 	console.log("FIN PARTIDA J1");
 	var nombre = prompt("Indica tu nombre para guardar la puntuación obtenida");  //Le pedimos al usuario que diga un nombre para guardar su puntuacion en el ranking
-	if (nombre!=null) {  //Si es distinto de null, significa que ha insertado un nombre para guardar la puntuacion
+
+	if (nombre!="" || nombre!=null) {  //Si es distinto de null, significa que ha insertado un nombre para guardar la puntuacion
 		localStorage.setItem("tetris"+localStorage.length, puntuacion+" puntos - "+nombre);  //Añadimos al localStorage el valor que queremos almacenar
 	}
 }

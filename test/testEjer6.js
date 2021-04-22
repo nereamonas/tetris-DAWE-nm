@@ -90,7 +90,6 @@ var ctx = canvas.getContext("2d");
 // ************************************
 // *     EJERCICIO 1                   *
 // ************************************
-
 // ============== Point =======================
 
 function Point (x, y) {
@@ -110,8 +109,9 @@ Rectangle.prototype.init = function(p1,p2) {
     this.color = 'black';
 }
 
-Rectangle.prototype.draw = function() {
 
+
+Rectangle.prototype.draw = function() {
     // TU CÓDIGO AQUÍ:
     // pinta un rectángulo del color actual en pantalla en la posición px,py, con
     // la anchura y altura actual y una línea de anchura=lineWidth. Ten en cuenta que
@@ -129,23 +129,17 @@ Rectangle.prototype.draw = function() {
 
 }
 
-
-Rectangle.prototype.setLineWidth = function(width) { this.lineWidth=width}
-Rectangle.prototype.setFill = function(color) { this.color = color}
-
-//** Método introducido en el EJERCICIO 4 */
-
+// ESTE CÓDIGO VIENE DADO
 Rectangle.prototype.move = function(x,y){
     this.px += x;
     this.py += y;
     this.draw();
 }
 
-//** Método introducido en el EJERCICIO 4 */
-
+// ESTE CÓDIGO VIENE DADO
 Rectangle.prototype.erase = function(){
     ctx.beginPath();
-    ctx.lineWidth = this.lineWidth+2;
+    ctx.lineWidth = this.lineWidth;
     ctx.strokeStyle = Tetris.BOARD_COLOR;
     ctx.rect(this.px, this.py, this.width, this.height);
     ctx.stroke();
@@ -154,8 +148,11 @@ Rectangle.prototype.erase = function(){
 
 }
 
+Rectangle.prototype.setLineWidth = function(width) { this.lineWidth=width}
+Rectangle.prototype.setFill = function(color) { this.color = color}
 
 // ============== Block ===============================
+
 
 function Block (pos, color) {
 
@@ -185,17 +182,27 @@ function Block (pos, color) {
 
 }
 
+
+
 Block.BLOCK_SIZE = 30;
 Block.OUTLINE_WIDTH = 2;
 
-// TU CÓDIGO AQUÍ: emplea el patrón de herencia (Block es un Rectangle)
+// TU CÓDIGO: patrón de herencia (Block es un Rectangle)
 Block.prototype = new Rectangle();   //decimos q herede de rectangle
 Block.prototype.constructor = Block;  //indicamos q su contructor es block, que sino coge por defecto rectangle
 
 
-/** Método introducido en el EJERCICIO 4 */
+Block.prototype.can_move = function(board, dx, dy) {
 
+    // TU CÓDIGO AQUÍ: toma como parámetro un increment (dx,dy)
+    // e indica si es posible mover el bloque actual si
+    // incrementáramos su posición en ese valor
+    canmove= board.can_move(this.x+dx, this.y+dy); // en this.x y this.y tenemos la posicion actual que hemos guardado al crear el bloque, asique incrementamos el dx y dy ha esas posiciones y llamamos al metodo de comprobar del board
+    return canmove
 
+}
+
+// ESTE CÓDIGO VIENE YA PROGRAMADO
 Block.prototype.move = function(dx, dy) {
     this.x += dx;
     this.y += dy;
@@ -203,29 +210,10 @@ Block.prototype.move = function(dx, dy) {
     Rectangle.prototype.move.call(this, dx * Block.BLOCK_SIZE, dy * Block.BLOCK_SIZE);
 }
 
-/**************************************************
- *	 Código que se da dado para el EJERCICIO 5 *
- ***************************************************/
-
-Block.prototype.can_move = function(board, dx, dy) {
-    // TU CÓDIGO AQUÍ: toma como parámetro un increment (dx,dy)
-    // e indica si es posible mover el bloque actual si
-    // incrementáramos su posición en ese valor
-    canmove= board.can_move(this.x+dx, this.y+dy); // en this.x y this.y tenemos la posicion actual que hemos guardado al crear el bloque, asique incrementamos el dx y dy ha esas posiciones y llamamos al metodo de comprobar del board
-    return canmove
-
-
-}
-
-// ************************************
-// *      EJERCICIO 2                  *
-// ************************************
-
 function Shape() {}
 
 
 Shape.prototype.init = function(coords, color) {
-
     // TU CÓDIGO AQUÍ: método de inicialización de una Pieza del tablero
     // Toma como parámetros: coords, un array de posiciones de los bloques
     // que forman la Pieza y color, un string que indica el color de los bloques
@@ -240,6 +228,7 @@ Shape.prototype.init = function(coords, color) {
 
 };
 
+
 Shape.prototype.draw = function() {
 
     // TU CÓDIGO AQUÍ: método que debe pintar en pantalla todos los bloques
@@ -248,12 +237,9 @@ Shape.prototype.draw = function() {
 
 };
 
-/**************************************************
- *	 Código que se da dado para el EJERCICIO 5 *
- ***************************************************/
 
 Shape.prototype.can_move = function(board, dx, dy) {
-    // TU CÓDIGO AQUÍ: comprobar límites para cada bloque de la pieza
+// TU CÓDIGO AQUÍ: comprobar límites para cada bloque de la pieza
     for (var i=0; i<this.blocks.length;i++){  //Tendremos q recorrer todos los bloques q forman la pieza
         canmove=this.blocks[i].can_move(board,dx,dy); //Llamamos al metodo del blocke para q nos diga si esa pieza se puede mover
         if (!canmove ) { //Si no se puede mover, automaticamente hacemos return false. no se seguira mirando
@@ -263,10 +249,8 @@ Shape.prototype.can_move = function(board, dx, dy) {
     return true; //Si llegamos hasta aqui es porque to do ha ido correcto asique devolvemos true, es decir q la pieza se podra mover
 };
 
-/** Método introducido en el EJERCICIO 4 */
-
+// ESTE CÓDIGO VIENE YA PROGRAMADO
 Shape.prototype.move = function(dx, dy) {
-
     for (block of this.blocks) {
         block.erase();
     }
@@ -274,7 +258,8 @@ Shape.prototype.move = function(dx, dy) {
     for (block of this.blocks) {
         block.move(dx,dy);
     }
-};
+}
+
 
 
 // ============= I_Shape ================================
@@ -392,34 +377,16 @@ Z_Shape.prototype = new Shape();   //decimos q herede de Shape
 Z_Shape.prototype.constructor = Z_Shape;  //indicamos q su contructor es Z_Shape, que sino coge por defecto Shape
 
 
-// ************************************
-// *     EJERCICIO 3               *
-// ************************************
-
 // ====================== BOARD ================
 
 function Board(width, height) {
     this.width = width;
     this.height = height;
-    this.grid = {}; /* 6. Estructura de datos introducida en el EJERCICIO 6 */
+    // NUEVO ATRIBUTO
+    this.grid = {};  /* 6. Estructura de datos introducida en el EJERCICIO 6 */
 
 }
 
-
-// Si la pieza nueva puede entrar en el tablero, pintarla y devolver true.
-// Si no, devoler false
-
-Board.prototype.draw_shape = function(shape){
-    if (shape.can_move(this,0,0)){
-        shape.draw();
-        return true;
-    }
-    return false;
-}
-
-/*****************************
- *	 EJERCICIO 6          *
- *****************************/
 
 Board.prototype.add_shape = function(shape){
     // TU CÓDIGO AQUÍ: meter todos los bloques de la pieza que hemos recibido por parámetro en la estructura de datos grid
@@ -435,10 +402,16 @@ Board.prototype.add_shape = function(shape){
     }
 }
 
-
-// ****************************
-// *     EJERCICIO 5          *
-// ****************************
+// CÓDIGO DADO
+// Si la pieza nueva puede entrar en el tablero, pintarla y devolver true.
+// Si no, devoler false
+Board.prototype.draw_shape = function(shape){
+    if (shape.can_move(this,0,0)){
+        shape.draw();
+        return true;
+    }
+    return false;
+}
 
 Board.prototype.can_move = function(x,y){
 
@@ -451,7 +424,7 @@ Board.prototype.can_move = function(x,y){
         canmove= true;
     }
     return canmove;
-};
+}
 
 // ==================== Tetris ==========================
 
@@ -462,11 +435,11 @@ function Tetris() {
 Tetris.SHAPES = [I_Shape, J_Shape, L_Shape, O_Shape, S_Shape, T_Shape, Z_Shape];
 Tetris.DIRECTION = {'Left':[-1, 0], 'Right':[1, 0], 'Down':[0, 1]};
 Tetris.BOARD_WIDTH = 10;
-Tetris.BOARD_HEIGHT = 20;
+Tetris.BOARD_HEIGHT = 5;
 Tetris.BOARD_COLOR='white';
 
-Tetris.prototype.create_new_shape = function(){
 
+Tetris.prototype.create_new_shape = function(){
     // TU CÓDIGO AQUÍ:
     // Elegir un nombre de pieza al azar del array Tetris.SHAPES
     // Crear una instancia de ese tipo de pieza (x = centro del tablero, y = 0)
@@ -478,7 +451,7 @@ Tetris.prototype.create_new_shape = function(){
     var center=Math.trunc(Tetris.BOARD_WIDTH/2);  //el centro del x será la largura del tablero / 2. como puede dar un numero con comas, con esta funcion devolvera el entero.
     var newpoint= new Point(center,0); //Creamos la pieza con la x=centro, y=0
 
-    //var piezaNueva= new shape(newpoint);  //shape cogera valor x ejemplo de I_Shape. Asique crearemos un I_shape como atributo pasandole el punto central
+    var piezaNueva= new shape(newpoint);  //shape cogera valor x ejemplo de I_Shape. Asique crearemos un I_shape como atributo pasandole el punto central
     var piezaNueva= new S_Shape(newpoint);  //Para pasar el test del ejercicio 4, 5 y 6(parte 1) - Para este ejercicio creamos una S_SHAPE SIEMPRE.  tendremos q descomentar esta linea
 
     return piezaNueva  //Devolvemos la referencia a la nueva pieza
@@ -487,24 +460,22 @@ Tetris.prototype.create_new_shape = function(){
 
 Tetris.prototype.init = function(){
 
-    /**************
-     EJERCICIO 4
-     ***************/
-
-    // gestor de teclado
-
-    document.addEventListener('keydown', this.key_pressed.bind(this), false);
-
-    // Obtener una nueva pieza al azar y asignarla como pieza actual
-
+    // CÓDIGO DADO
+    // obtener una nueva pieza al azar y asignarla como pieza actual
     this.current_shape = this.create_new_shape()
 
     // TU CÓDIGO AQUÍ:
     // Pintar la pieza actual en el tablero
     // Aclaración: (Board tiene un método para pintar)
-    this.board.draw_shape(this.current_shape);  //Llamamos al metodo de pintar de board y le pasamoa la pieza actual para q la pinte
+
+    this.current_shape = this.create_new_shape()
+
+    // CÓDIGO DADO
+    // inicializar gestor de eventos de teclado añadiéndole un callback al método key_pressed
+    document.addEventListener('keydown', this.key_pressed.bind(this), false);
 
 }
+
 
 Tetris.prototype.key_pressed = function(e) {
 
@@ -525,17 +496,17 @@ Tetris.prototype.key_pressed = function(e) {
     }else if (key==32){  //Barra espaciadora
         this.do_move("Space");
     }
+};
 
-}
 
-Tetris.prototype.do_move = function(direction) {
-
+Tetris.prototype.do_move = function(direction){
     // TU CÓDIGO AQUÍ: el usuario ha pulsado la tecla Left, Right o Down (izquierda,
     // derecha o abajo). Tenemos que mover la pieza en la dirección correspondiente
     // a esa tecla. Recuerda que el array Tetris.DIRECTION guarda los desplazamientos
     // en cada dirección, por tanto, si accedes a Tetris.DIRECTION[direction],
     // obtendrás el desplazamiento (dx, dy). A continuación analiza si la pieza actual
     // se puede mover con ese desplazamiento. En caso afirmativo, mueve la pieza.
+
 
     if (direction=='Space'){
 
@@ -564,9 +535,11 @@ Tetris.prototype.do_move = function(direction) {
             this.board.draw_shape(this.current_shape); //Dibujar la nueva pieza en el tablero
         }
     }
-}
+    /* Código que se pide en el EJERCICIO 6 */
+    // else if(direction=='Down')
+    // TU CÓDIGO AQUÍ: añade la pieza actual al grid. Crea una nueva pieza y dibújala en el tablero.
 
-
+};
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////// PRUEBAS ////////////////////////////////////////////////////////////
@@ -624,7 +597,7 @@ QUnit.module('EJERCICIO 6', function() {
         assert.ok( game.board.grid["4,4"] instanceof Block, "Grid tiene bloque en 4,4");
 
     });
-/*
+
     QUnit.test('Sale pieza nueva', function(assert) {
 
         // en este test no saldrá una nueva pieza al azar en la
@@ -636,10 +609,10 @@ QUnit.module('EJERCICIO 6', function() {
         pixelEqual(canvas, 30*5+15, 15, 0, 128, 0, 255, "Green en la parte superior");
 
     });
-*/
+
 
 });
-/*
+
 QUnit.module('EJERCICIO 6.2', function() {
 
     // clear the canvas
@@ -665,14 +638,7 @@ QUnit.module('EJERCICIO 6.2', function() {
         ctx.lineTo(Tetris.BOARD_WIDTH*30, y);
         ctx.stroke();
     }
-
-    var doc = $(document);
-    doc.keydown( function( event ) {
-        game.key_pressed(event);
-    }).trigger( // left
-        jQuery.Event( 'keydown', { keyCode: 32, which: 32 } )
-    );
-    game.key_pressed(32);
+    game.do_move("Space");
 
     QUnit.test('Testing SpaceBar ', function(assert) {
         // Para este test hemos creado un tablero de 10x10.
@@ -697,7 +663,7 @@ QUnit.module('EJERCICIO 6.2', function() {
 });
 
 
-*/
+
 
 
 
