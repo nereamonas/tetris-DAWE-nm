@@ -1,0 +1,154 @@
+body {
+    background-image: url("../imagen/fondo.png");
+    background-repeat: no-repeat;
+    background-size: 85%;
+}
+
+#canvas {
+    border:1px solid #000000;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+.column {
+    width: 25%;
+    float: left;
+    padding: 10px;
+}
+
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+
+
+.button1 {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 16px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+}
+
+.buttonUnJugador {
+    color: black;
+    border: 2px solid #4CAF50;
+    background-color: #ddfcdd;
+    font-size: 150%;
+}
+
+.buttonUnJugador:hover {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.buttonDosJugadores {
+    color: black;
+    border: 2px solid #008CBA;
+    background-color: #ddebf6;
+    font-size: 150%;
+}
+
+.buttonDosJugadores:hover {
+    background-color: #008CBA;
+    color: white;
+}
+
+.buttonOnlineDosJugadores {
+    color: black;
+    border: 2px solid #fa00f5;
+    background-color: #fce0ff;
+    font-size: 150%;
+}
+
+.buttonOnlineDosJugadores:hover {
+    background-color: #fa00f5;
+    color: white;
+}
+
+.buttonJugarUnJug {
+    color: black;
+    border: 2px solid #ff801e;
+    background-color: #f8d6bc;
+    font-size: 150%;
+    text-align: center;
+    width: 100%;
+
+}
+
+.buttonJugarUnJug:hover {
+    background-color: #ff801e;
+    color: white;
+}
+
+.buttonJugarMultiJug {
+    color: black;
+    border: 2px solid #f01eff;
+    background-color: #fbc2ff;
+    font-size: 150%;
+    text-align: center;
+    width: 100%;
+
+}
+
+.buttonJugarMultiJug:hover {
+    background-color: #f01eff;
+    color: white;
+}
+
+.center {
+    padding: 70px 0px 225px;
+    border: 3px solid green;
+    text-align: center;
+}
+.centerUnJug {
+    padding: 30px 50px 560px;
+    border: 3px solid #ff801e;
+}
+
+.rankingUnJug {
+    padding: 10px 10px;
+    background-color: white;
+    font-size: large;
+    border: 2px solid #ff801e;
+}
+.centerMultiJug {
+    padding: 30px 50px 560px;
+    border: 3px solid #f01eff;
+}
+
+.rankingMultiJug {
+    padding: 10px 10px;
+    background-color: white;
+    font-size: large;
+    border: 2px solid #f01eff;
+}
+
+
+.column2 {
+    width: 50%;
+    float: left;
+    padding: 10px;
+}
+
+.logoTetris {
+    width: 600px;
+    text-align: center;
+}
+
+.tecladoInstrucciones {
+    width: 525px;
+    text-align: center;
+}
+
+

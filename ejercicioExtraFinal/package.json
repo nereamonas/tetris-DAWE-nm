@@ -1,0 +1,19 @@
+{
+  "name": "customers",
+  "version": "1.0.0",
+  "description": "Gestión de clientes",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Nerea Monas",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "ejs": "^2.5.9",
+    "express": "^4.17.1",
+    "express-validator": "^5.1.2",
+    "mongojs": "^2.6.0",
+    "socket.io": "^4.0.1"
+  }
+}

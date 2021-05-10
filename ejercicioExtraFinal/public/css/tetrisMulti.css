@@ -1,0 +1,35 @@
+body {
+    background-image: url("../imagen/fondo.png");
+    background-repeat: no-repeat;
+    background-size: 85%;
+}
+#canvas {
+    border:1px solid #000000;
+}
+#canvasJ2 {
+    border:1px solid #000000;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    grid-gap: 10px;
+    padding: 10px;
+}
+
+.grid-container > div {
+    padding: 10px 0;
+}
+
+.textoOnline {
+        text-align: center;
+        font-weight: bold;
+        font-size: 22px;
+	font-family: Calibri, Candara, Segoe, "Segoe UI", Optima, Arial, sans-serif;
+}
+
+

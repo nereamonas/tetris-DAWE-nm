@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tetris</title>
+    <link rel="stylesheet" href="css/tetris.css">
+<link rel="shortcut icon" href="imagen/fondo.png">
+    <script>
+	    /* Lo dejo por si lo mejoro y se pueden crear distintas salas para el multi
+        function crearSala() {
+            var num=Math.floor((Math.random() * (99999 - 10000 + 1)) + 10000);
+            document.getElementById("multiJugadorOnline").href="multiJugadorOnline.html?sala="+num;
+        }*/
+    </script>
+</head>
+<body>
+    <div class="center">
+        <img src="imagen/logo.png" class="logoTetris" alt=""><br><br>
+        <a class="button1 buttonUnJugador" href="unJugadorRanking.html" id="unJugador">Un jugador</a>
+        <a class="button1 buttonDosJugadores" href="multiJugadorRanking.html" id="multiJugador">Multijugador</a>
+	<!--<a class="button1 buttonOnlineDosJugadores" href="#" onclick="crearSala()" id="multiJugadorOnline">Multijugador Online</a>-->
+	<a class="button1 buttonOnlineDosJugadores" href="multiJugadorOnline.html" id="multiJugadorOnline">Multijugador Online</a>
+    </div>
+</body>
+</html>

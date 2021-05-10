@@ -1,0 +1,92 @@
+<!doctype html>
+<html>
+<head>
+    <title>Tetris Multijugador</title>
+    <link rel="stylesheet" href="css/tetrisMulti.css">
+    <script src="js/tetris.js"></script>
+    <script src="js/multiJugadorTetris.js"></script>
+<link rel="shortcut icon" href="#">
+</head>
+<body>
+<div class="grid-container">
+    <div class="item1" >
+        <canvas id="canvas" width="300" height="600" style="float:left"></canvas>
+        <div id="images" style="position:absolute">
+            <img id="pause" src="imagen/pause.png" alt="Pause" width="300" style="visibility:hidden" />
+        </div>
+        <div style="position:absolute">
+            <img id="gameOver" src="imagen/gameOver.png" alt="gameOver" width="300" style="visibility:hidden"/>
+        </div>
+        <div style="position:absolute">
+            <img id="sonido" src="imagen/sonidoDesactivado.png" alt="Pause" onClick="cambiarModoSonido()" width="20"  style="text-align:right"/>
+        </div>
+    </div>
+    <div class="item2" >
+        <p id="puntuacion">Puntuación: 0</p>
+        <p id="nivel">Nivel: 1</p>
+        <p> Siguiente pieza:</p>
+        <canvas  id="canvasNextPieza" width="180" height="150"></canvas>
+    </div>
+    <div class="item3" >
+        <canvas id="canvasJ2" width="300" height="600" style="float:left"></canvas>
+        <div id="imagesJ2" style="position:absolute">
+            <img id="pauseJ2" src="imagen/pause.png" alt="Pause" width="300" style="visibility:hidden" />
+        </div>
+        <div style="position:absolute">
+            <img id="gameOverJ2" src="imagen/gameOver.png" alt="gameOver" width="300" style="visibility:hidden"/>
+        </div>
+        <div style="position:absolute">
+            <img id="sonidoJ2" src="imagen/sonidoDesactivado.png" alt="Pause" onClick="cambiarModoSonido()" width="20"  style="text-align:right"/>
+        </div>
+    </div>
+    <div class="item4" >
+        <p id="puntuacionJ2">Puntuación: 0</p>
+        <p id="nivelJ2">Nivel: 1</p>
+        <p> Siguiente pieza:</p>
+        <canvas  id="canvasNextPiezaJ2" width="180" height="150"></canvas>
+    </div>
+
+</div>
+<audio id="audioFondo">
+    <source src="audio/sonido_tetris.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+
+    // ===== main ====
+    // canvas related variables
+    var canvas = document.getElementById("canvas");
+    var ctx = canvas.getContext("2d");
+    var ctxNextPieza = document.getElementById("canvasNextPieza").getContext("2d");
+    var puntuacion=0;
+    var textPuntuacion=document.getElementById("puntuacion");
+    var nivel=1;
+    var textNivel=document.getElementById("nivel");
+
+    // clear the canvas
+    ctx.fillStyle = 'white';
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+
+    var game = new Tetris();
+    game.init();
+
+    //J2
+    // canvas related variables
+    var canvasJ2 = document.getElementById("canvasJ2");
+    var ctxJ2 = canvasJ2.getContext("2d");
+    var ctxNextPiezaJ2 = document.getElementById("canvasNextPiezaJ2").getContext("2d");
+    var puntuacionJ2=0;
+    var textPuntuacionJ2=document.getElementById("puntuacionJ2");
+    var nivelJ2=1;
+    var textNivelJ2=document.getElementById("nivelJ2");
+
+    // clear the canvas
+    ctxJ2.fillStyle = 'white';
+    ctxJ2.fillRect(0,0,canvasJ2.width,canvasJ2.height);
+
+    var gameJ2 = new TetrisJ2();
+    gameJ2.init();
+
+</script>
+</body>
+</html>
