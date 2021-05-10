@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>test1</title>
+  <link rel="stylesheet" href="https://code.jquery.com/qunit/qunit-2.15.0.css">
+  <script src="https://code.jquery.com/qunit/qunit-2.15.0.js"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+  <script src="qunit-assert-canvas.js"></script>
+  <script src="../ejercicio8/tetris.js"></script>
+</head>
+<body>
+<canvas id="canvas" width="300" height="600"></canvas>
+<div id="qunit"></div>
+<div id="qunit-fixture"></div>
+
+<script>
+  // canvas related variables
+  var canvas = document.getElementById("canvas");
+  var ctx = canvas.getContext("2d");
+
+  QUnit.module('GAME OVER', function() {
+
+    // clear the canvas
+    ctx.fillStyle = 'white';
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+
+    var game = new Tetris();
+    game.init();
+
+    console.log(gameOver);
+    //Al principio la variable game over estará a false
+    QUnit.test('Testing: La variable game over está a false', function(assert) {
+      assert.ok( !gameOver, "la variable game over está a false");
+
+    });
+
+    QUnit.test('Testing: La variable game_over está a true', function(assert) {
+      //Vamos a forzar la tecla Space. para q caigan 14 piezas. Despues de esto ya se debveria haber llenado to do el canvas y la variablle game over se debe haber convertido a true
+      for (var i = 0; i < 14; i++) {
+        console.log(gameOver);
+        game.do_move("Space");
+      }
+
+      //Comrpobamos que gameOver es true
+      assert.ok( gameOver, "la variable game over está a true");
+
+    });
+
+  });
+
+</script>
+</body>
+</html>

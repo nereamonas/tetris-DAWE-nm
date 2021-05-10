@@ -535,7 +535,7 @@ Board.prototype.remove_complete_rows = function(){
 var gameOver = false;
 Board.prototype.game_over = function() {
 	console.log("GAMEOVER");
-
+	gameOver = true;
 	// Mostrar mensaje de game over en el canvas
 	ctx.font = "50px Tetris";
 	ctx.fillStyle = "black";
